@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Arena : MonoBehaviour {
 
@@ -47,4 +48,7 @@ public class Arena : MonoBehaviour {
 	private float _time = -1; 
 	[SerializeField]
 	private Text _timerText;
+
+	[SerializeField]
+	private List<SkillBtn> _skillButtons;
 }
