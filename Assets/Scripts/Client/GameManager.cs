@@ -78,6 +78,7 @@ public class GameManager:MonoBehaviour
 
 	public void ConnectToBattle(bool isBot)
 	{
+		_screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
 		_client.CreateOrJoinToBattle(isBot ? GameMode.PvE : GameMode.PvP);
 	}
 

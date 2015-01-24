@@ -29,6 +29,9 @@ public class ScreenManager : MonoBehaviour
 			case Screens.Main:
 				_currentScreen = _mainScreen;
 				break;
+			case Screens.Connecting:
+				_currentScreen = _connecting;
+				break;
 		}
 		_currentScreen.SetActive(true);
 	}
@@ -66,11 +69,15 @@ public class ScreenManager : MonoBehaviour
 	[SerializeField]
 	private GameObject _characterChangeScreen;
 
+	[SerializeField]
+	private GameObject _connecting;
+
 	private GameObject _currentScreen;
 
 	public enum Screens
 	{
 		Main,
-		CharacterChange
+		CharacterChange,
+		Connecting
 	}
 }
