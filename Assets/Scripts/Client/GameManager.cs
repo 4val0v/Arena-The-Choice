@@ -140,26 +140,12 @@ public class GameManager : MonoBehaviour
         //Logger.Log("HandleOnEnemyDmgReceived:" + dmg);
 
         //calculate shield
-        float addDef = 0f;
-
-        foreach (var ability in _client.EnemyData.Abilities)
-        {
-            addDef += ability.Def;
-        }
-
         for (int i = _client.EnemyData.Abilities.Count - 1; i >= 0; i--)
         {
             var ab = _client.EnemyData.Abilities[i];
 
             ab.UpdateOnDmgReceive();
         }
-
-        Logger.Log("addDef:" + addDef + ",abCount:" + _client.EnemyData.Abilities.Count + ", dmg:" + dmg);
-
-        dmg -= (int)addDef;
-
-        if (dmg < 0)
-            dmg = 0;
 
         _client.EnemyData.CurrentHp -= dmg;
         _screenManager.Arena.MakeDmgToEnemy(dmg);
