@@ -3315,6 +3315,10 @@ Prefab:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 821050571}
+    - target: {fileID: 11488496, guid: 537d06b8036ec42cf845bf84e4b0d10f, type: 2}
+      propertyPath: _textInField
+      value: 
+      objectReference: {fileID: 1827612979}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 537d06b8036ec42cf845bf84e4b0d10f, type: 2}
   m_RootGameObject: {fileID: 1982620638}
@@ -5854,6 +5858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc3fef6b90c784ce292d32b7deb59fe8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _textInField: {fileID: 1827612979}
   _inputField: {fileID: 1827612979}
 --- !u!1 &2009822538
 GameObject:
