@@ -149,11 +149,16 @@ public class GameManager : MonoBehaviour
 
     private void HandleOnAbilityUsed(int whoId, int abilityId)
     {
-        var t = (AbilityType) abilityId;
+        var t = (AbilityType)abilityId;
 
         if (t == AbilityType.Sword && whoId == _client.EnemyData.Id)
         {
             _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t));
+        }
+        else if (whoId == _client.PlayerData.Id)
+        {
+            if (t == AbilityType.Axe || t == AbilityType.Spear || t == AbilityType.Mace)
+                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t));
         }
     }
 

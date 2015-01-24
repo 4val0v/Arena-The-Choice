@@ -166,7 +166,7 @@ public class NetPlayer : Photon.PunBehaviour
 
     public void SendUseAbility(int abilityId)
     {
-        photonView.RPC("AbilityUsedReceived", PhotonTargets.AllViaServer, abilityId);
+        photonView.RPC("AbilityUsedReceived", PhotonTargets.All, abilityId);
     }
     #region handlers
 
