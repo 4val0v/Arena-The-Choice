@@ -44,6 +44,6 @@
             return;
         }
 
-        Player.Abilities.Remove(this);
+      RemoveFromAbilities();
     }
 }

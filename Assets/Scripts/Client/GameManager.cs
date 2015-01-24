@@ -161,7 +161,8 @@ public class GameManager : MonoBehaviour
         {
             if (t == AbilityType.Sword || t == AbilityType.Dagger)
             {
-                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t));
+                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t,this));
+                RecalculateAdditionalStats();
                 Logger.Log("add enemy ability:" + t);
             }
         }
@@ -169,10 +170,29 @@ public class GameManager : MonoBehaviour
         {
             if (t == AbilityType.Axe || t == AbilityType.Spear || t == AbilityType.Mace || t == AbilityType.Shield)
             {
-                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t));
+                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t,this));
+                RecalculateAdditionalStats();
                 Logger.Log("add ability:" + t);
             }
         }
+    }
+
+    public void RecalculateAdditionalStats()
+    {
+        float addDmg = 0f;
+        float addDef = 0f;
+        float addAS = 0f;
+
+        foreach (var ability in _client.PlayerData.Abilities)
+        {
+            addDmg += ability.Dmg;
+            addDef += ability.Def;
+            addAS += ability.AttackSpeed;
+        }
+
+        _screenManager.TopBar.SetDmg(_client.PlayerData.Dmg, addDmg);
+        _screenManager.TopBar.SetDef(_client.PlayerData.Def, addDef);
+        _screenManager.TopBar.SetAttackSpeed(_client.PlayerData.AttackSpeed, addAS);
     }
 
     private void GetItemOnItemEquipClicked(int i)

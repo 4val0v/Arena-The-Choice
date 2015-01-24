@@ -33,7 +33,7 @@ public class SpearAbility : BaseAbility
 
         if (_remainAttackCount == 0)
         {
-            Player.Abilities.Remove(this);
+           RemoveFromAbilities();
         }
     }
 }

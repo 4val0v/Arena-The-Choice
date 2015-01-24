@@ -11,26 +11,40 @@
 
 public static class AbilityFactory
 {
-    public static BaseAbility CreateAbility(AbilityType ability)
+    public static BaseAbility CreateAbility(AbilityType ability, GameManager gm)
     {
+        BaseAbility ab = null;
+
         switch (ability)
         {
             case AbilityType.Spear:
-                return new SpearAbility();
+                ab = new SpearAbility();
+                break;
             case AbilityType.Mace:
-                return new MaceAbility();
+                ab = new MaceAbility();
+                break;
             case AbilityType.Sword:
-                return new SwordAbility();
+                ab = new SwordAbility();
+                break;
             case AbilityType.Axe:
-                return new AxeAbility();
+                ab = new AxeAbility();
+                break;
             case AbilityType.Dagger:
-                return new DaggerAbility();
+                ab = new DaggerAbility();
+                break;
             case AbilityType.Shield:
-                return new ShieldAbility();
+                ab = new ShieldAbility();
+                break;
             case AbilityType.Helm:
-                return new HelmAbility();
+                ab = new HelmAbility();
+                break;
         }
 
-        return null;
+        if (ab != null)
+        {
+            ab.Gm = gm;
+        }
+
+        return ab;
     }
 }

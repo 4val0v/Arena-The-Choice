@@ -12,6 +12,8 @@
 
     protected AbilityData BaseData { get { return AbilitiesProvider.GetAbility(Id); } }
 
+    public GameManager Gm { get; set; }
+
     public virtual void Update()
     {
 
@@ -25,5 +27,12 @@
     public virtual void UpdateOnDmgReceive()
     {
 
+    }
+
+    protected void RemoveFromAbilities()
+    {
+        Player.Abilities.Remove(this);
+
+        Gm.RecalculateAdditionalStats();
     }
 }
