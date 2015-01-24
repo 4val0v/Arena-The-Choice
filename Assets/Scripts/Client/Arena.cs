@@ -162,7 +162,7 @@ public class Arena : MonoBehaviour
 			_color = Color.red;
 		}
 
-		score.SetText (scrText, Color.red);
+		score.SetText (scrText, _color);
 	}
 
 	public void MakeDmgToEnemy(int dmg)
