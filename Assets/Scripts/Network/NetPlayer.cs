@@ -8,6 +8,7 @@ public static class NetPlExtension
     public const string NameProp = "plName";
     public const string ClassProp = "plClass";
     public const string HpProp = "plHp";
+    public const string DefProp = "plDef";
 
     public static string GetName(this PhotonPlayer player)
     {
@@ -41,6 +42,21 @@ public static class NetPlExtension
         PhotonNetwork.player.SetCustomProperties(new Hashtable() { { ClassProp, (int)name } });
     }
 
+    public static float GetDef(this PhotonPlayer player)
+    {
+        object teamId;
+        if (player.customProperties.TryGetValue(DefProp, out teamId))
+        {
+            return (float)teamId;
+        }
+
+        return 0.0f;
+    }
+
+    public static void SetDef(this PhotonPlayer player, float def)
+    {
+        PhotonNetwork.player.SetCustomProperties(new Hashtable() { { DefProp, def } });
+    }
     // public static int GetHp
 }
 public class NetPlayer : Photon.PunBehaviour
@@ -268,12 +284,20 @@ public class NetPlayer : Photon.PunBehaviour
             if (dmg > 0)
                 dmg -= (int)Client.EnemyData.Def;
 
+            //attack < def
+            if (dmg < 0)
+                dmg = 0;
+
             Client.RaiseEnemyDmgReceived(weaponId, dmg);
         }
         else
         {
             if (dmg > 0)
                 dmg -= (int)Client.PlayerData.Def;
+
+            //attack < def
+            if (dmg < 0)
+                dmg = 0;
 
             Client.RaiseDmgReceived(weaponId, dmg);
         }
@@ -309,11 +333,23 @@ public class NetPlayer : Photon.PunBehaviour
     {
         if (photonView.isMine)
         {
-            Client.PlayerData.CurrentHp += hp;
+            Client.RaiseHpAdjusted(hp);
         }
         else
         {
-            Client.EnemyData.CurrentHp += hp;
+            Client.RaiseEnemyHpAdjusted(hp);
+        }
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            if (Client.PlayerData.CurrentHp <= 0.01f)
+            {
+                SendGameFinished(Client.EnemyData.Id);
+            }
+            else if (Client.EnemyData.CurrentHp <= 0.01f)
+            {
+                SendGameFinished(Client.PlayerData.Id);
+            }
         }
     }
     #endregion

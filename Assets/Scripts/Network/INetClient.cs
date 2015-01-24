@@ -130,6 +130,10 @@ public interface INetClient
     event Action<int, int> OnEnemyDmgReceived;
 
     event Action<int, int> OnAbilityUsed;
+
+    event Action<int> OnHpAdjusted;
+
+    event Action<int> OnEnemyHpAdjusted;
     
     PlayerData PlayerData { get; }
 

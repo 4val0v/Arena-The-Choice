@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
         _client.OnDmgReceived += HandleOnDmgReceived;
         _client.OnEnemyDmgReceived += HandleOnEnemyDmgReceived;
         _client.OnAbilityUsed += HandleOnAbilityUsed;
+        _client.OnHpAdjusted += ClientOnOnHpAdjusted;
+        _client.OnEnemyHpAdjusted += ClientOnOnEnemyHpAdjusted;
 
         _screenManager.CharacterChangeScreen.OnCharacterSelected += SelectClass;
         _screenManager.GetItem.ItemEquipClicked += GetItemOnItemEquipClicked;
@@ -58,7 +60,7 @@ public class GameManager : MonoBehaviour
 
     void HandleOnGameStarted()
     {
-        Logger.Log("Game started!");
+        //Logger.Log("Game started!");
         _screenManager.Arena.Client = _client;
         _screenManager.ChangeScreen(ScreenManager.Screens.Arena);
     }
@@ -66,7 +68,7 @@ public class GameManager : MonoBehaviour
     void HandleOnItemEquipped(int playerId, int itemId)
     {
         //get item
-        Logger.Log("ItemEquipped: playerId:" + playerId + ", itemId:" + itemId);
+        //Logger.Log("ItemEquipped: playerId:" + playerId + ", itemId:" + itemId);
 
         //refresh
         _screenManager.GetItem.UpdateEquippedItems(_client.PlayerData.EquippedItems, _client.EnemyData.EquippedItems);
@@ -81,7 +83,7 @@ public class GameManager : MonoBehaviour
     void HandleOnStepItemsReceived(EquipStep step, System.Collections.Generic.IEnumerable<int> items)
     {
         //create screen change item
-        Logger.Log("Current step:" + step + ", items...");
+        //Logger.Log("Current step:" + step + ", items...");
 
         _screenManager.GetItem.UpdateStock(step, items);
 
@@ -96,7 +98,7 @@ public class GameManager : MonoBehaviour
 
     void HandleOnFirstPlayerReceived(int playerId)
     {
-        Logger.Log("I'm first:" + (_client.PlayerData.Id == playerId) + ", fisrtId:" + playerId);
+        //Logger.Log("I'm first:" + (_client.PlayerData.Id == playerId) + ", fisrtId:" + playerId);
 
         _screenManager.GetItem.SetFirstPlayerId(playerId);
         _screenManager.GetItem.IsYouFirst = _client.PlayerData.Id == playerId;
@@ -106,7 +108,7 @@ public class GameManager : MonoBehaviour
     {
         CheckLastSelectionOfCharacter();
         //change enemy character 
-        Logger.Log("enemy classId:" + classId);
+        //Logger.Log("enemy classId:" + classId);
         _client.EnemyData.CurrentHp = _client.EnemyData.MaxHp;
         _screenManager.TopBar.SetEnemyHp(1f);
     }
@@ -135,15 +137,39 @@ public class GameManager : MonoBehaviour
 
     private void HandleOnEnemyDmgReceived(int weaponId, int dmg)
     {
+        //Logger.Log("HandleOnEnemyDmgReceived:" + dmg);
+
+        //calculate shield
+        float addDef = 0f;
+
+        foreach (var ability in _client.EnemyData.Abilities)
+        {
+            addDef += ability.Def;
+        }
+
+        for (int i = _client.EnemyData.Abilities.Count - 1; i >= 0; i--)
+        {
+            var ab = _client.EnemyData.Abilities[i];
+
+            ab.UpdateOnDmgReceive();
+        }
+
+        dmg -= (int)addDef;
+
+        if (dmg < 0)
+            dmg = 0;
+
         _client.EnemyData.CurrentHp -= dmg;
-		_screenManager.Arena.MakeDmgToEnemy (dmg);
+        _screenManager.Arena.MakeDmgToEnemy(dmg);
         _screenManager.TopBar.SetEnemyHp(_client.EnemyData.CurrentHp / _client.EnemyData.MaxHp);
     }
 
     private void HandleOnDmgReceived(int weaponId, int dmg)
     {
+        //Logger.Log("HandleOnDmgReceived:" + dmg);
+
         _client.PlayerData.CurrentHp -= dmg;
-		_screenManager.Arena.MakeDmgToPlayer (dmg);
+        _screenManager.Arena.MakeDmgToPlayer(dmg);
         _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp);
 
         for (int i = _client.PlayerData.Abilities.Count - 1; i >= 0; i--)
@@ -161,20 +187,43 @@ public class GameManager : MonoBehaviour
         {
             if (t == AbilityType.Sword || t == AbilityType.Dagger)
             {
-                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t,this));
+                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t, this));
                 RecalculateAdditionalStats();
                 Logger.Log("add enemy ability:" + t);
+            }
+
+            if (t == AbilityType.Shield)
+            {
+                _client.EnemyData.Abilities.Add(AbilityFactory.CreateAbility(AbilityType.EnemyShield, this));
             }
         }
         else if (whoId == _client.PlayerData.Id)
         {
-            if (t == AbilityType.Axe || t == AbilityType.Spear || t == AbilityType.Mace || t == AbilityType.Shield)
+            if (t == AbilityType.Axe || t == AbilityType.Spear || t == AbilityType.Mace || t == AbilityType.Shield || t == AbilityType.Helm)
             {
-                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t,this));
+                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t, this));
                 RecalculateAdditionalStats();
                 Logger.Log("add ability:" + t);
             }
         }
+    }
+
+    private void ClientOnOnEnemyHpAdjusted(int adjHp)
+    {
+        Logger.Log("ClientOnOnEnemyHpAdjusted:" + adjHp);
+
+        _client.EnemyData.CurrentHp += adjHp;
+        _screenManager.Arena.MakeDmgToEnemy(-adjHp);
+        _screenManager.TopBar.SetEnemyHp(_client.EnemyData.CurrentHp / _client.EnemyData.MaxHp);
+    }
+
+    private void ClientOnOnHpAdjusted(int adjHp)
+    {
+        Logger.Log("ClientOnOnHpAdjusted:" + adjHp);
+
+        _client.PlayerData.CurrentHp += adjHp;
+        _screenManager.Arena.MakeDmgToPlayer(-adjHp);
+        _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp);
     }
 
     public void RecalculateAdditionalStats()
@@ -190,9 +239,9 @@ public class GameManager : MonoBehaviour
             addAS += ability.AttackSpeed;
         }
 
-        _screenManager.TopBar.SetDmg(_client.PlayerData.Dmg, addDmg);
+        _screenManager.TopBar.SetDmg(_client.PlayerData.DmgWithoutAbilities, addDmg);
         _screenManager.TopBar.SetDef(_client.PlayerData.Def, addDef);
-        _screenManager.TopBar.SetAttackSpeed(_client.PlayerData.AttackSpeed, addAS);
+        _screenManager.TopBar.SetAttackSpeed(_client.PlayerData.AttackSpeed - addAS, addAS);
     }
 
     private void GetItemOnItemEquipClicked(int i)

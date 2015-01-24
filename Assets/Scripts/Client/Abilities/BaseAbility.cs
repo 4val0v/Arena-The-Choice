@@ -29,7 +29,7 @@
 
     }
 
-    protected void RemoveFromAbilities()
+    protected virtual void RemoveFromAbilities()
     {
         Player.Abilities.Remove(this);
 

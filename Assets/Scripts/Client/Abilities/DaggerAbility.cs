@@ -20,7 +20,7 @@
         get { return 0f; }
     }
 
-    private const float DmgWithAttack = 20;
+    private const int DmgWithAttack = 20;
     private const int AttacksCount = 6;
 
     private int _remainAttackCount = AttacksCount;
@@ -35,6 +35,6 @@
             return;
         }
 
-        Player.CurrentHp -= DmgWithAttack;
+        NetPlayer.My.AdjHp(-DmgWithAttack);
     }
 }

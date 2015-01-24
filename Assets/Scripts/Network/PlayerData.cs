@@ -11,7 +11,7 @@ public class PlayerData
     public readonly List<int> EquippedItems = new List<int>();
 
     public readonly List<BaseAbility> Abilities = new List<BaseAbility>();
- 
+
     public CharacterData BaseData { get { return CharacterDataProviders.GetBaseData(Class); } }
 
     private float _hp;
@@ -67,6 +67,21 @@ public class PlayerData
             foreach (var ability in Abilities)
             {
                 par += ability.Dmg;
+            }
+
+            return par;
+        }
+    }
+
+    public float DmgWithoutAbilities
+    {
+        get
+        {
+            var par = BaseData.BaseDmg;
+
+            foreach (var item in EquippedItems)
+            {
+                par += ItemsProvider.GetItem(item).Dmg;
             }
 
             return par;

@@ -30,6 +30,8 @@ public class HelmAbility : BaseAbility
 
     public override void UpdateOnAttack()
     {
+        Logger.Log("Helm add hp:" + HealthHp);
+
         NetPlayer.My.AdjHp(HealthHp);
 
         _remainAttackCount--;

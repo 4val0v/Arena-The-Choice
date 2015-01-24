@@ -7,6 +7,7 @@
     Dagger,
     Shield,
     Helm,
+    EnemyShield,
 }
 
 public static class AbilityFactory
@@ -34,6 +35,9 @@ public static class AbilityFactory
                 break;
             case AbilityType.Shield:
                 ab = new ShieldAbility();
+                break;
+            case AbilityType.EnemyShield:
+                ab = new EnemyShieldAbility();
                 break;
             case AbilityType.Helm:
                 ab = new HelmAbility();

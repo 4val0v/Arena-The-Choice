@@ -34,6 +34,8 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
     public event Action<int, int> OnDmgReceived = delegate { };
     public event Action<int, int> OnEnemyDmgReceived = delegate { };
     public event Action<int, int> OnAbilityUsed = delegate { };
+    public event Action<int> OnHpAdjusted = delegate { };
+    public event Action<int> OnEnemyHpAdjusted = delegate { };
 
     public PlayerData PlayerData { get; private set; }
     public PlayerData EnemyData { get; private set; }
@@ -51,7 +53,7 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
             {
                 Class = CharacterClass.None,
             };
-            
+
             EnemyData = new PlayerData
             {
                 Class = CharacterClass.None
@@ -235,7 +237,8 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
             }
 
         }
-        else if (props.ContainsKey(NetPlExtension.ClassProp))
+
+        if (props.ContainsKey(NetPlExtension.ClassProp))
         {
             target.Class = player.GetClass();
 
@@ -248,6 +251,11 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
                 OnEnemyClassUpdated(EnemyData.Class);
             }
         }
+
+        //if (props.ContainsKey(NetPlExtension.DefProp))
+        //{
+
+        //}
     }
 
     public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
@@ -302,5 +310,17 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
     public void RaiseAbilityUsed(int whoId, int abilityId)
     {
         OnAbilityUsed(whoId, abilityId);
+    }
+
+    public void RaiseHpAdjusted(int hp)
+    {
+        Logger.Log("RaiseHpAdjusted:" + hp);
+        OnHpAdjusted(hp);
+    }
+
+    public void RaiseEnemyHpAdjusted(int hp)
+    {
+        Logger.Log("RaiseEnemyHpAdjusted:" + hp);
+        OnEnemyHpAdjusted(hp);
     }
 }
