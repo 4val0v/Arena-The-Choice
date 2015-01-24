@@ -265,12 +265,16 @@ public class NetPlayer : Photon.PunBehaviour
     {
         if (photonView.isMine)
         {
-            dmg -= (int)Client.EnemyData.Def;
+            if (dmg > 0)
+                dmg -= (int)Client.EnemyData.Def;
+
             Client.RaiseEnemyDmgReceived(weaponId, dmg);
         }
         else
         {
-            dmg -= (int)Client.PlayerData.Def;
+            if (dmg > 0)
+                dmg -= (int)Client.PlayerData.Def;
+
             Client.RaiseDmgReceived(weaponId, dmg);
         }
 
