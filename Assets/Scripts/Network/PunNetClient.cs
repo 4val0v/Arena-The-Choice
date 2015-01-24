@@ -170,34 +170,16 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
     {
         Logger.Log("OnJoinedLobby");
 
-        var res = PhotonNetwork.JoinRandomRoom();
-
-        Logger.Log("JoinRandomRoom res:" + res);
-
-        if (res)
-        {
-            PhotonNetwork.CreateRoom(null, new RoomOptions { maxPlayers = 2, isOpen = true, isVisible = true },
-          TypedLobby.Default);
-        }
+        PhotonNetwork.JoinRandomRoom();
     }
 
-    public override void OnPhotonJoinRoomFailed(object[] codeAndMsg)
+    public override void OnPhotonRandomJoinFailed(object[] codeAndMsg)
     {
-        Logger.Log("OnPhotonJoinRoomFailed");
+        Logger.Log("OnPhotonRandomJoinFailed");
 
         PhotonNetwork.CreateRoom(null, new RoomOptions { maxPlayers = 2, isOpen = true, isVisible = true },
             TypedLobby.Default);
     }
-
-    //public override void OnCreatedRoom()
-    //{
-    //    Logger.Log("OnCreatedRoom");
-
-    //    PhotonNetwork.Instantiate("NetPlayer", Vector3.zero, Quaternion.identity, 0);
-
-    //    PhotonNetwork.player.SetName(PlayerData.Name);
-    //    PhotonNetwork.player.SetClass(PlayerData.Class);
-    //}
 
     /// <summary>
     /// When we in battle
