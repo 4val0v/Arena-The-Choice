@@ -86,6 +86,10 @@ public class GameManager : MonoBehaviour
     void HandleOnClassUpdated(CharacterClass obj)
     {
         CheckLastSelectionOfCharacter();
+
+        _screenManager.TopBar.SetDmg(CharacterDataProviders.GetBaseData(obj).BaseDmg);
+        _screenManager.TopBar.SetDef(CharacterDataProviders.GetBaseData(obj).BaseDef);
+        _screenManager.TopBar.SetAttackSpeed(CharacterDataProviders.GetBaseData(obj).BaseAttackSpeed);
     }
 
     void HandleOnNameUpdated(string name)

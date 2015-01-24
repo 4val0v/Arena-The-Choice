@@ -112,7 +112,7 @@ public class GetItem : MonoBehaviour
     {
         _equipStepText.text = "Now step is " + step;
 
-       // Logger.Log("Update sctock:" + items.Count() + " items");
+        // Logger.Log("Update sctock:" + items.Count() + " items");
 
         //clear all
         ClearStock();
@@ -155,6 +155,11 @@ public class GetItem : MonoBehaviour
         //refresh enemy inventory
     }
 
+    public void UpdateItemDescription(string text)
+    {
+        _itemDescriptionText.text = text;
+    }
+
     private void ClearStock()
     {
         foreach (var child in StockItems)
@@ -164,6 +169,8 @@ public class GetItem : MonoBehaviour
         }
 
         StockItems.Clear();
+
+        UpdateItemDescription("");
     }
 
     public void EquipItem()
@@ -185,7 +192,54 @@ public class GetItem : MonoBehaviour
             child.IsSelected = view.ItemData.Id == child.ItemData.Id;
         }
 
+        UpdateItemDescription(GetDescriptionText(view.ItemData));
+
         EquipButtonVisible(view.IsSelected && !view.IsEquipped && IsMyTurn);
+    }
+
+    private string GetDescriptionText(ItemData item)
+    {
+        string txt = "";
+
+        switch (item.Type)
+        {
+            case ItemType.LeftHand:
+                txt += "Dmg:" + item.Dmg + "\n";
+                txt += "AS:" + item.AttackSpeed + "\n";
+                txt += "Accur:" + item.Accuracy;
+                break;
+
+            case ItemType.RightHand:
+                if (item.Defense > 0.001f)
+                {
+                    txt += "Def:" + item.Defense;
+                }
+                else
+                {
+                    txt += "Dmg:" + item.Dmg + "\n";
+                    txt += "AS:" + item.AttackSpeed + "\n";
+                    txt += "Accur:" + item.Accuracy;
+                }
+                break;
+
+            case ItemType.Helm:
+                txt += "Def:" + item.Defense;
+                break;
+        }
+
+        if (item.Ability != null)
+            txt += "\n" + GetAbilityDescription(item.Ability);
+
+        return txt;
+    }
+
+    private string GetAbilityDescription(AbilityData data)
+    {
+        string txt = "";
+
+        txt = data.Description;
+
+        return txt;
     }
 
     private void EquipButtonVisible(bool visible)

@@ -10,6 +10,10 @@ public class TopBar : MonoBehaviour
     public Slider PlayerHp;
     public Slider EnemyHp;
 
+    public Text DmgText;
+    public Text Deftext;
+    public Text AttackSpeedText;
+
     public void UpdatePlayerName(string name)
     {
         PlayerName.text = name;
@@ -28,6 +32,21 @@ public class TopBar : MonoBehaviour
     public void SetEnemyHp(float percent)
     {
         EnemyHp.value = percent;
+    }
+
+    public void SetDmg(float dmg)
+    {
+        DmgText.text = dmg + "";
+    }
+
+    public void SetDef(float def)
+    {
+        Deftext.text = def + "";
+    }
+
+    public void SetAttackSpeed(float attackSpeed)
+    {
+        AttackSpeedText.text = attackSpeed + "";
     }
 
     public void Show()
