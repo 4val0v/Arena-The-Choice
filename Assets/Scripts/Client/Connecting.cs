@@ -15,7 +15,7 @@ public class Connecting : MonoBehaviour {
 		_time = 0;
 		if (!_tempChange)
 		{
-			_mainWord = Texts.CONNECTING;
+			ChangeMainWord(Texts.CONNECTING);
 		}
 		_tempChange = false;
 	}
@@ -46,6 +46,7 @@ public class Connecting : MonoBehaviour {
 	{
 		_mainWord = word;
 		_tempChange = true;
+		_textField.text = _mainWord;
 	}
 
 	private float _time;

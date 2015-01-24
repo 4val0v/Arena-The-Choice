@@ -51,19 +51,27 @@ public class ScreenManager : MonoBehaviour
         yield return _getItem;
     }
 
-    public GameObject CharacterChangeScreen
+	public SelectCharacter CharacterChangeScreen
     {
         get
         {
-            return _characterChangeScreen;
+			if(_selectCharacterComp == null)
+			{
+				_selectCharacterComp = _characterChangeScreen.GetComponent<SelectCharacter>();
+			}
+			return _selectCharacterComp;
         }
     }
 
-    public GameObject ConnectingScreen
+    public Connecting ConnectingScreen
     {
         get
         {
-            return _connecting;
+			if (_connectingComp == null)
+			{
+				_connectingComp = _connecting.GetComponent<Connecting>();
+			}
+			return _connectingComp;
         }
     }
 
@@ -97,10 +105,12 @@ public class ScreenManager : MonoBehaviour
 
     public void SetCustomText(string text)
     {
-        ConnectingScreen.GetComponent<Connecting>().ChangeMainWord(text);
+        ConnectingScreen.ChangeMainWord(text);
     }
 
 	private GetItem _getItemComp;
+	private Connecting _connectingComp;
+	private SelectCharacter _selectCharacterComp;
 
     [SerializeField]
     private GameObject _mainScreen;

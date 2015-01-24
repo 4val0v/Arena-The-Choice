@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         _client.OnGameFinished += HandleOnGameFinished;
         _client.OnNameUpdated += HandleOnNameUpdated;
 
-        _screenManager.CharacterChangeScreen.GetComponent<SelectCharacter>().OnCharacterSelected += SelectClass;
+		_screenManager.CharacterChangeScreen.OnCharacterSelected += SelectClass;
         _screenManager.GetItem.ItemEquipClicked += GetItemOnItemEquipClicked;
     }
 
