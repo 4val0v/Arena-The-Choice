@@ -24,36 +24,43 @@ public class GameManager : MonoBehaviour
     void HandleOnGameFinished(int playrWinID)
     {
         //onPlayerWin;
+        Logger.Log("game finish. winner id:" + playrWinID);
     }
 
     void HandleOnGameStarted()
     {
         //fight
+        Logger.Log("game started!");
     }
 
     void HandleOnItemEquipped(int playerId, int itemId)
     {
         //get item
+        Logger.Log("ItemEquipped: playerId:" + playerId + ", itemId:" + itemId);
     }
 
     void HandleOnStepItemsReceived(EquipStep step, System.Collections.Generic.IEnumerable<int> items)
     {
         //create screen change item
+        Logger.Log("Current step:" + step + ", items...");
     }
 
     void HandleOnFirstPlayerReceived(int playerId)
     {
         //id of first 
+        Logger.Log("first player:" + playerId);
     }
 
     void HandleOnEnemyClassUpdated(CharacterClass classId)
     {
         //change enemy character 
+        Logger.Log("enemy classId:" + classId);
     }
 
     void HandleOnEnemyNameUpdated(string name)
     {
         //update enemy name;
+        Logger.Log("enemy name:" + name);
     }
 
     void HandleOnStatusChanged(NetStatus status)
@@ -68,6 +75,7 @@ public class GameManager : MonoBehaviour
                 _screenManager.ChangeScreen(ScreenManager.Screens.Main);
                 break;
             case NetStatus.ConnectingToBattle:
+                _screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
                 break;
             case NetStatus.ConnectedToBattle:
                 _screenManager.ChangeScreen(ScreenManager.Screens.CharacterChange);
@@ -81,7 +89,7 @@ public class GameManager : MonoBehaviour
     {
         _playerName = "Pl" + UnityEngine.Random.Range(0, short.MaxValue);
         _client.UpdateName(_playerName);
-        _screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
+
         _client.CreateOrJoinToBattle(isBot ? GameMode.PvE : GameMode.PvP);
     }
 
