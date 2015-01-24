@@ -19,7 +19,14 @@
     {
         get
         {
-            return Player.AttackSpeed * AttackSpeedK;
+            var par = Player.BaseData.BaseAttackSpeed;
+
+            foreach (var item in Player.EquippedItems)
+            {
+                par += ItemsProvider.GetItem(item).AttackSpeed;
+            }
+
+            return par * AttackSpeedK;
         }
     }
 
