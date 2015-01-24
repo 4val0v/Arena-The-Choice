@@ -32,6 +32,7 @@ public class GetItem : MonoBehaviour
 
     void OnEnable()
     {
+		_whoIsTheFirst.Show ();
         if (IsYouFirst)
         {
             _whoIsTheFirst.Play("you");
@@ -42,42 +43,15 @@ public class GetItem : MonoBehaviour
         }
     }
 
-    private void EndFirstPlayerAnim()
-    {
-        Logger.Log("End First playerAnim");
-        _whoIsTheFirst.gameObject.SetActive(false);
-    }
+	private void EndFirstPlayerAnim()
+	{
+		Logger.Log ("End First playerAnim");
+		_whoIsTheFirst.Hide ();
+	}
 
     public void UpdateStock(IEnumerable<int> items)
     {
         //clear all
         ClearStock();
 
-        //create item
-        foreach (var itemId in items)
-        {
-            var itemData = ItemsProvider.GetItem(itemId);
-
-            var newView = Instantiate(_stockItemPref) as GameObject;
-
-            ((RectTransform)newView.transform).SetParent(_stockGrid.transform);
-
-            _stockItems.Add(newView.GetComponent<StockItemView>());
-        }
-    }
-
-    private void ClearStock()
-    {
-        foreach (var child in _stockItems)
-        {
-            DestroyObject(child.gameObject);
-        }
-
-        _stockItems.Clear();
-    }
-
-    public void SelectItem(int id)
-    {
-
-    }
 }

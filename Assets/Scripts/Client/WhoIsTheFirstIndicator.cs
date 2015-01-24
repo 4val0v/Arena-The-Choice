@@ -15,6 +15,16 @@ public class WhoIsTheFirstIndicator : MonoBehaviour
 	
 	}
 
+	public void Show()
+	{
+		gameObject.SetActive (true);
+	}
+
+	public void Hide()
+	{
+		gameObject.SetActive (false);
+	}
+
 	public void Play(string name)
 	{
 		_whoIsTheFirst.Play (name);
