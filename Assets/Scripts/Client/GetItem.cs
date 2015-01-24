@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,9 @@ public class GetItem : MonoBehaviour
     [SerializeField]
     private Text _itemDescriptionText;
 
+    [SerializeField] 
+    private Text _equipStepText;
+
     private readonly List<StockItemView> _stockItems = new List<StockItemView>();
 
     void Start()
@@ -31,7 +35,7 @@ public class GetItem : MonoBehaviour
 
     void OnEnable()
     {
-		_whoIsTheFirst.Show ();
+        _whoIsTheFirst.Show();
         if (IsYouFirst)
         {
             _whoIsTheFirst.Play("you");
@@ -42,14 +46,18 @@ public class GetItem : MonoBehaviour
         }
     }
 
-	private void EndFirstPlayerAnim()
-	{
-		Logger.Log ("End First playerAnim");
-		_whoIsTheFirst.Hide ();
-	}
+    private void EndFirstPlayerAnim()
+    {
+        Logger.Log("End First playerAnim");
+        _whoIsTheFirst.Hide();
+    }
 
     public void UpdateStock(EquipStep step, IEnumerable<int> items)
     {
+        _equipStepText.text = "Now step is " + step;
+
+        Logger.Log("Update sctock:" + items.Count() + " items");
+
         //clear all
         ClearStock();
 
@@ -60,9 +68,12 @@ public class GetItem : MonoBehaviour
 
             var newView = Instantiate(_stockItemPref) as GameObject;
 
-            ((RectTransform)newView.transform).SetParent(_stockGrid.transform);
+            newView.transform.SetParent(_stockGrid.transform);
 
-            _stockItems.Add(newView.GetComponent<StockItemView>());
+            var script = newView.GetComponent<StockItemView>();
+            script.SetData(itemData);
+
+            _stockItems.Add(script);
         }
     }
 

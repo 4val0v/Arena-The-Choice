@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using UnityEngine;
 
@@ -100,7 +101,23 @@ public class NetPlayer : Photon.PunBehaviour
 
     private void SetStepItems(EquipStep step)
     {
-        int[] items = new[] { 1 };
+        int[] items = null;
+
+        switch (step)
+        {
+            case EquipStep.FirstHand:
+                items = new[] {1, 2, 3, 4};
+                break;
+            case EquipStep.SecondHand:
+                items = new[] {5, 6, 7, 8};
+                break;
+            case EquipStep.Armor:
+                items = new int[] {9, 10, 11, 12};
+                break;
+            default:
+                throw new ArgumentOutOfRangeException("step");
+        }
+
         photonView.RPC("StepItemsReceived", PhotonTargets.All, (int)step, items);
     }
 
