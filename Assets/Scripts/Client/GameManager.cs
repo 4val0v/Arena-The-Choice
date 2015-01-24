@@ -145,20 +145,29 @@ public class GameManager : MonoBehaviour
         _client.PlayerData.CurrentHp -= dmg;
 
         _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp);
+
+        for (int i = _client.PlayerData.Abilities.Count - 1; i >= 0; i--)
+        {
+            var ability = _client.PlayerData.Abilities[i];
+            ability.UpdateOnDmgReceive();
+        }
     }
 
     private void HandleOnAbilityUsed(int whoId, int abilityId)
     {
         var t = (AbilityType)abilityId;
 
-        if (t == AbilityType.Sword && whoId == _client.EnemyData.Id)
+        if (whoId == _client.EnemyData.Id)
         {
-            _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t));
-            Logger.Log("add enemy ability:" + t);
+            if (t == AbilityType.Sword || t == AbilityType.Dagger)
+            {
+                _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t));
+                Logger.Log("add enemy ability:" + t);
+            }
         }
         else if (whoId == _client.PlayerData.Id)
         {
-            if (t == AbilityType.Axe || t == AbilityType.Spear || t == AbilityType.Mace)
+            if (t == AbilityType.Axe || t == AbilityType.Spear || t == AbilityType.Mace || t == AbilityType.Shield)
             {
                 _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t));
                 Logger.Log("add ability:" + t);

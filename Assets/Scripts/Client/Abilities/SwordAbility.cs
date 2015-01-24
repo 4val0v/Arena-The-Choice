@@ -26,6 +26,14 @@
                 par += ItemsProvider.GetItem(item).AttackSpeed;
             }
 
+            //foreach (var ability in Player.Abilities)
+            //{
+            //    if (ability == this)
+            //        continue;
+
+            //    par += ability.AttackSpeed;
+            //}
+
             return par * AttackSpeedK;
         }
     }

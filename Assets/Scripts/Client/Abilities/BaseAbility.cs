@@ -21,4 +21,9 @@
     {
 
     }
+
+    public virtual void UpdateOnDmgReceive()
+    {
+
+    }
 }

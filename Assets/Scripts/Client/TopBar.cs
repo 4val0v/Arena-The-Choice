@@ -59,7 +59,7 @@ public class TopBar : MonoBehaviour
         }
         else if (addDmg < -0.001f)
         {
-            txt += "<color=red>-" + addDmg + "</color>";
+            txt += "<color=red>" + addDmg + "</color>";
         }
         else
         {
@@ -79,7 +79,7 @@ public class TopBar : MonoBehaviour
         }
         else if (addDef < -0.001f)
         {
-            txt += "<color=red>-" + addDef + "</color>";
+            txt += "<color=red>" + addDef + "</color>";
         }
 
         Deftext.text = txt;
@@ -95,7 +95,7 @@ public class TopBar : MonoBehaviour
         }
         else if (addAttackSpeed < -0.001f)
         {
-            txt += "<color=red>-" + addAttackSpeed + "</color>";
+            txt += "<color=red>" + addAttackSpeed + "</color>";
         }
 
         AttackSpeedText.text = txt;

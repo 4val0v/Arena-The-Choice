@@ -51,6 +51,10 @@ public class Arena : MonoBehaviour
             TimeBeforeNextKick();
             timerOfFight = 0;
             _dmg = (int)_client.PlayerData.Dmg;
+
+            if (_dmg < 0)
+                _dmg = 0;
+
             if (Random.value > _client.PlayerData.Accuracy)
             {
                 _dmg = 0;
