@@ -90,7 +90,7 @@ public class Arena : MonoBehaviour {
 
 	void TimeBeforeNextKick()
 	{
-		_timeBeforeNextKick = 1 / _client.PlayerData.AttackSpeed;
+		_timeBeforeNextKick = 60 / _client.PlayerData.AttackSpeed;
 	}
 
 	public INetClient Client
