@@ -62,6 +62,7 @@ public class Arena : MonoBehaviour {
 		_timerOnScreen = -1;
 		time = 3;
 		_timerText.gameObject.SetActive (false);
+		_fightStarted = false;
 	}
 
 	private void TimerFinish()
