@@ -25,6 +25,9 @@ public class ScreenManager : MonoBehaviour
             case Screens.GetItem:
                 _topBar.Show();
                 _currentScreen = _getItem;
+			case Screens.GetItem:
+				_topBar.Show();
+				_currentScreen = _arena;
                 break;
         }
         _currentScreen.SetActive(true);
@@ -112,6 +115,9 @@ public class ScreenManager : MonoBehaviour
     [SerializeField]
     private TopBar _topBar;
 
+	[SerializeField]
+	private GameObject _arena;
+
     private GameObject _currentScreen;
 
     public enum Screens
@@ -119,6 +125,7 @@ public class ScreenManager : MonoBehaviour
         Main,
         CharacterChange,
         Connecting,
-        GetItem
+        GetItem,
+		Arena
     }
 }

@@ -34,8 +34,7 @@ public class GameManager : MonoBehaviour
 
     void HandleOnGameStarted()
     {
-        //fight
-        Logger.Log("game started!");
+		_screenManager.ChangeScreen (ScreenManager.Screens.Arena);
     }
 
     void HandleOnItemEquipped(int playerId, int itemId)
