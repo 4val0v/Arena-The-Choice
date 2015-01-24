@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using UnityEngine;
 
 public class PunNetClient : Photon.PunBehaviour, INetClient
@@ -191,6 +192,51 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
         PhotonNetwork.Instantiate("NetPlayer", Vector3.zero, Quaternion.identity, 0);
     }
 
+    public override void OnPhotonPlayerPropertiesChanged(object[] playerAndUpdatedProps)
+    {
+        PhotonPlayer player = playerAndUpdatedProps[0] as PhotonPlayer;
+        Hashtable props = playerAndUpdatedProps[1] as Hashtable;
+
+        PlayerData target;
+
+        if (player.isLocal)
+        {
+            target = PlayerData;
+        }
+        else
+        {
+            target = EnemyData;
+        }
+
+
+        if (props.ContainsKey(NetPlExtension.NameProp))
+        {
+            target.Name = player.GetName();
+
+            if (player.isLocal)
+            {
+                OnNameUpdated(PlayerData.Name);
+            }
+            else
+            {
+                OnEnemyNameUpdated(EnemyData.Name);
+            }
+
+        }
+        else if (props.ContainsKey(NetPlExtension.ClassProp))
+        {
+            target.Class = player.GetClass();
+
+            if (player.isLocal)
+            {
+                OnClassUpdated(PlayerData.Class);
+            }
+            else
+            {
+                OnEnemyClassUpdated(EnemyData.Class);
+            }
+        }
+    }
     #endregion
 
     public void RaiseBattleStarted()
@@ -206,25 +252,5 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
     public void RaiseStepItems(EquipStep step, IEnumerable<int> items)
     {
         OnStepItemsReceived(step, items);
-    }
-
-    public void RaiseNameUpdated()
-    {
-        OnNameUpdated(PlayerData.Name);
-    }
-
-    public void RaiseEnemyNameUpdated()
-    {
-        OnNameUpdated(EnemyData.Name);
-    }
-
-    public void RaiseClassUpdated()
-    {
-        OnClassUpdated(PlayerData.Class);
-    }
-
-    public void RaiseEnemyClassUpdated()
-    {
-        OnEnemyClassUpdated(EnemyData.Class);
     }
 }
