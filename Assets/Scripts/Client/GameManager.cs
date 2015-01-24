@@ -154,6 +154,8 @@ public class GameManager : MonoBehaviour
             ab.UpdateOnDmgReceive();
         }
 
+        Logger.Log("addDef:" + addDef + ",abCount:" + _client.EnemyData.Abilities.Count + ", dmg:" + dmg);
+
         dmg -= (int)addDef;
 
         if (dmg < 0)
