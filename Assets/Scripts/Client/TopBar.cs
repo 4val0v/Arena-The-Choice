@@ -15,7 +15,7 @@ public class TopBar : MonoBehaviour
         PlayerName.text = name;
     }
 
-    public void UpdateEnemyHp(string name)
+    public void UpdateEnemyName(string name)
     {
         EnemyName.text = name;
     }

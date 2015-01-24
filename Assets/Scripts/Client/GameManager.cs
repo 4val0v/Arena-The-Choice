@@ -15,8 +15,9 @@ public class GameManager : MonoBehaviour
         _client.OnItemEquipped += HandleOnItemEquipped;
         _client.OnGameStarted += HandleOnGameStarted;
         _client.OnGameFinished += HandleOnGameFinished;
+        _client.OnNameUpdated += HandleOnNameUpdated;
 
-		_screenManager.CharacterChangeScreen.GetComponent<SelectCharacter> ().OnCharacterSelected += SelectClass;
+        _screenManager.CharacterChangeScreen.GetComponent<SelectCharacter>().OnCharacterSelected += SelectClass;
     }
 
     void Start()
@@ -56,28 +57,33 @@ public class GameManager : MonoBehaviour
 
     void HandleOnEnemyClassUpdated(CharacterClass classId)
     {
-		CheckLastSelectionOfCharacter ();
+        CheckLastSelectionOfCharacter();
         //change enemy character 
         Logger.Log("enemy classId:" + classId);
     }
-	
-	void HandleOnClassUpdated (CharacterClass obj)
-	{
-		CheckLastSelectionOfCharacter ();
-	}
+
+    void HandleOnClassUpdated(CharacterClass obj)
+    {
+        CheckLastSelectionOfCharacter();
+    }
+
+    void HandleOnNameUpdated(string name)
+    {
+        _screenManager.TopBar.UpdatePlayerName(name);
+    }
 
     void HandleOnEnemyNameUpdated(string name)
     {
-		_screenManager.TopBar.UpdateEnemyHp (name);
+        _screenManager.TopBar.UpdateEnemyName(name);
     }
 
-	private void CheckLastSelectionOfCharacter()
-	{
-		if (_client.PlayerData.Class != CharacterClass.None && _client.EnemyData.Class != CharacterClass.None)
-		{
-			_screenManager.ChangeScreen(ScreenManager.Screens.GetItem);
-		}
-	}
+    private void CheckLastSelectionOfCharacter()
+    {
+        if (_client.PlayerData.Class != CharacterClass.None && _client.EnemyData.Class != CharacterClass.None)
+        {
+            _screenManager.ChangeScreen(ScreenManager.Screens.GetItem);
+        }
+    }
 
     void HandleOnStatusChanged(NetStatus status)
     {
@@ -109,12 +115,12 @@ public class GameManager : MonoBehaviour
         _client.CreateOrJoinToBattle(isBot ? GameMode.PvE : GameMode.PvP);
     }
 
-	public void SelectClass(int num)
-	{
-		_screenManager.SetCustomText (Texsts.PLAYER_WAIT);
-		_screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
-		_client.SetClass((CharacterClass) num);
-	}
+    public void SelectClass(int num)
+    {
+        _screenManager.SetCustomText(Texsts.PLAYER_WAIT);
+        _screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
+        _client.SetClass((CharacterClass)num);
+    }
 
     private string _playerName = "";
 
