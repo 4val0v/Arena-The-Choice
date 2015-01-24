@@ -16,6 +16,7 @@ public class ScreenManager : MonoBehaviour
 
 	public void ChangeScreen(Screens screen)
 	{
+		_topBar.Hide();
 		if (_currentScreen != null)
 		{
 			_currentScreen.SetActive(false);
@@ -32,6 +33,7 @@ public class ScreenManager : MonoBehaviour
 				_currentScreen = _connecting;
 				break;
 			case Screens.GetItem:
+				_topBar.Show();
 				_currentScreen = _getItem;
 				break;
 		}
@@ -67,6 +69,12 @@ public class ScreenManager : MonoBehaviour
 		}
 	}
 
+	public TopBar TopBar {
+		get {
+			return _topBar;
+		}
+	}
+
 	public void SetCustomText(string text)
 	{
 		ConnectingScreen.GetComponent<Connecting> ().ChangeMainWord (text);
@@ -83,6 +91,9 @@ public class ScreenManager : MonoBehaviour
 
 	[SerializeField]
 	private GameObject _getItem;
+
+	[SerializeField]
+	private TopBar _topBar;
 
 	private GameObject _currentScreen;
 

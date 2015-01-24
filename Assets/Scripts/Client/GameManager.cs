@@ -68,8 +68,7 @@ public class GameManager : MonoBehaviour
 
     void HandleOnEnemyNameUpdated(string name)
     {
-        //update enemy name;
-        Logger.Log("enemy name:" + name);
+		_screenManager.TopBar.UpdateEnemyHp (name);
     }
 
 	private void CheckLastSelectionOfCharacter()
