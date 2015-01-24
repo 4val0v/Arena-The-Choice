@@ -13,6 +13,10 @@ public class Connecting : MonoBehaviour {
 	void OnEnable()
 	{
 		_time = 0;
+		if (!_tempChange)
+		{
+			_mainWord = "Connecting";
+		}
 	}
 	
 	// Update is called once per frame
@@ -40,10 +44,12 @@ public class Connecting : MonoBehaviour {
 	public void ChangeMainWord(string word)
 	{
 		_mainWord = word;
+		_tempChange = true;
 	}
 
 	private float _time;
-	private string _mainWord = "Connecting";
+	private string _mainWord;
+	private bool _tempChange = false;
 	private string _added = ".";
 
 	[SerializeField]

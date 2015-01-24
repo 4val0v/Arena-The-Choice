@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour
 
 	public void SelectClass(int num)
 	{
+		_screenManager.ConnectingScreen.GetComponent<Connecting> ().ChangeMainWord (Texsts.PLAYER_WAIT);
 		_screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
 		_client.SetClass((CharacterClass) num);
 	}

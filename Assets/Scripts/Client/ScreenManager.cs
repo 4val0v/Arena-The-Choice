@@ -56,6 +56,12 @@ public class ScreenManager : MonoBehaviour
 		}
 	}
 
+	public GameObject ConnectingScreen {
+		get {
+			return _connecting;
+		}
+	}
+
 	[SerializeField]
 	private GameObject _mainScreen;
 
