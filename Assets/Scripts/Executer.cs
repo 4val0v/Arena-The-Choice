@@ -31,9 +31,9 @@ public class CoroutineExecuter : MonoBehaviour
     {
         if (_tasks.Count > 0)
         {
-            foreach (var task in _tasks)
+            for (int i = 0; i < _tasks.Count; i++)
             {
-                task();
+                _tasks[i]();
             }
 
             _tasks.Clear();

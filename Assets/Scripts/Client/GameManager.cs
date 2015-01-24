@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
 
         //refresh
         _screenManager.GetItem.UpdateEquippedItems(_client.PlayerData.EquippedItems, _client.EnemyData.EquippedItems);
+
+        _screenManager.GetItem.SetTurn(playerId != _client.PlayerData.Id);
     }
 
     void HandleOnStepItemsReceived(EquipStep step, System.Collections.Generic.IEnumerable<int> items)
@@ -63,8 +65,6 @@ public class GameManager : MonoBehaviour
         Logger.Log("I'm first:" + (_client.PlayerData.Id == playerId) + ", fisrtId:" + playerId);
 
         _screenManager.GetItem.IsYouFirst = _client.PlayerData.Id == playerId;
-
-        _screenManager.GetItem.SetTurn(_screenManager.GetItem.IsYouFirst);
     }
 
     void HandleOnEnemyClassUpdated(CharacterClass classId)

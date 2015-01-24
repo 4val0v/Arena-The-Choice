@@ -46,8 +46,6 @@ public static class NetPlExtension
 public class NetPlayer : Photon.PunBehaviour
 {
     public int Id { get { return photonView.ownerId; } }
-    private static NetPlayer _master;
-    private static NetPlayer _other;
 
     private Room Room { get { return PhotonNetwork.room; } }
     private PunNetClient Client { get { return (PunNetClient)PunNetClient.Instance; } }
@@ -72,13 +70,24 @@ public class NetPlayer : Photon.PunBehaviour
         }
     }
 
+    public static NetPlayer Enemy
+    {
+        get
+        {
+            foreach (var netPlayer in _players)
+            {
+                if (!netPlayer.photonView.isMine)
+                {
+                    return netPlayer;
+                }
+            }
+
+            return null;
+        }
+    }
+
     void Awake()
     {
-        if (photonView.owner.isMasterClient)
-            _master = this;
-        else
-            _other = this;
-
         _players.Add(this);
     }
 
@@ -103,9 +112,7 @@ public class NetPlayer : Photon.PunBehaviour
 
     private void SendStartBattle()
     {
-        Client.PlayerData.Id = PhotonNetwork.player.ID;
-
-        photonView.RPC("BattleStartReceived", PhotonTargets.All, Id, _other.Id);
+        photonView.RPC("BattleStartReceived", PhotonTargets.All, My.Id, Enemy.Id);
     }
 
     private void SetFirstPlayer()
@@ -152,7 +159,7 @@ public class NetPlayer : Photon.PunBehaviour
     [RPC]
     public void BattleStartReceived(int playerId, int otherId)
     {
-        if (IsMaster)
+        if (PhotonNetwork.isMasterClient)
         {
             Client.PlayerData.Id = playerId;
             Client.EnemyData.Id = otherId;

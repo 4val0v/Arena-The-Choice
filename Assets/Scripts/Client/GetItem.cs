@@ -54,6 +54,8 @@ public class GetItem : MonoBehaviour
         {
             _whoIsTheFirst.Play("enemy");
         }
+
+        SetTurn(IsYouFirst);
     }
 
     private void EndFirstPlayerAnim()
@@ -136,7 +138,7 @@ public class GetItem : MonoBehaviour
 
         StockItems.Clear();
     }
-    
+
     public void EquipItem()
     {
         var selectedItem = StockItems.FirstOrDefault(n => n.IsSelected && !n.IsEquipped);
@@ -153,7 +155,7 @@ public class GetItem : MonoBehaviour
 
         foreach (var child in StockItems)
         {
-            child.IsSelected = view == child;
+            child.IsSelected = view.ItemData.Id == child.ItemData.Id;
         }
 
         EquipButtonVisible(view.IsSelected && !view.IsEquipped && IsMyTurn);
