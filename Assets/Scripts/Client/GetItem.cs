@@ -30,6 +30,8 @@ public class GetItem : MonoBehaviour
 
     public bool IsMyTurn { get; private set; }
 
+    public int FirstPlayerId { get; private set; }
+
     void Start()
     {
         _whoIsTheFirst.OnEndAnimChoise += EndFirstPlayerAnim;
@@ -72,6 +74,11 @@ public class GetItem : MonoBehaviour
         }
 
         SetTurn(IsYouFirst);
+    }
+
+    public void SetFirstPlayerId(int playerId)
+    {
+        FirstPlayerId = playerId;
     }
 
     public void SetTurn(bool isMyTurn)

@@ -59,6 +59,12 @@ public class GameManager : MonoBehaviour
 
         _screenManager.GetItem.UpdateStock(step, items);
 
+        var my = _screenManager.GetItem.FirstPlayerId == _client.PlayerData.Id
+            ? (step == EquipStep.FirstHand || step == EquipStep.Armor)
+            : step == EquipStep.SecondHand;
+
+        _screenManager.GetItem.SetTurn(my);
+
         _screenManager.GetItem.UpdateSelection();
     }
 
@@ -66,6 +72,7 @@ public class GameManager : MonoBehaviour
     {
         Logger.Log("I'm first:" + (_client.PlayerData.Id == playerId) + ", fisrtId:" + playerId);
 
+        _screenManager.GetItem.SetFirstPlayerId(playerId);
         _screenManager.GetItem.IsYouFirst = _client.PlayerData.Id == playerId;
     }
 
