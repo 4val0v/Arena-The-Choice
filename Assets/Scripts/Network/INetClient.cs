@@ -49,6 +49,7 @@ public enum GameMode
 
 public enum CharacterClass
 {
+    None,
     Man,
     Woman,
     Orc,
