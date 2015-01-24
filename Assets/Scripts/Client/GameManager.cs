@@ -23,6 +23,22 @@ public class GameManager : MonoBehaviour
 
         _screenManager.CharacterChangeScreen.OnCharacterSelected += SelectClass;
         _screenManager.GetItem.ItemEquipClicked += GetItemOnItemEquipClicked;
+        _screenManager.GetItem.ItemSelected += GetItemOnItemSelected;
+    }
+
+    private void GetItemOnItemSelected(int itemId)
+    {
+        var itemData = ItemsProvider.GetItem(itemId);
+
+        var data = _client.PlayerData;
+        var topBar = _screenManager.TopBar;
+
+        if (data.Class != CharacterClass.None)
+        {
+            topBar.SetDmg(data.Dmg, itemData.Dmg);
+            topBar.SetDef(data.Def, itemData.Defense);
+            topBar.SetAttackSpeed(data.AttackSpeed, itemData.AttackSpeed);
+        }
     }
 
     void Start()
@@ -55,6 +71,10 @@ public class GameManager : MonoBehaviour
         _screenManager.GetItem.UpdateEquippedItems(_client.PlayerData.EquippedItems, _client.EnemyData.EquippedItems);
 
         _screenManager.GetItem.SetTurn(playerId != _client.PlayerData.Id);
+
+        _screenManager.TopBar.SetDmg(_client.PlayerData.Dmg);
+        _screenManager.TopBar.SetDef(_client.PlayerData.Def);
+        _screenManager.TopBar.SetAttackSpeed(_client.PlayerData.AttackSpeed);
     }
 
     void HandleOnStepItemsReceived(EquipStep step, System.Collections.Generic.IEnumerable<int> items)
@@ -94,9 +114,9 @@ public class GameManager : MonoBehaviour
     {
         CheckLastSelectionOfCharacter();
 
-        _screenManager.TopBar.SetDmg(CharacterDataProviders.GetBaseData(obj).BaseDmg);
-        _screenManager.TopBar.SetDef(CharacterDataProviders.GetBaseData(obj).BaseDef);
-        _screenManager.TopBar.SetAttackSpeed(CharacterDataProviders.GetBaseData(obj).BaseAttackSpeed);
+        _screenManager.TopBar.SetDmg(_client.PlayerData.Dmg);
+        _screenManager.TopBar.SetDef(_client.PlayerData.Def);
+        _screenManager.TopBar.SetAttackSpeed(_client.PlayerData.AttackSpeed);
 
         _client.PlayerData.CurrentHp = _client.PlayerData.MaxHp;
         _screenManager.TopBar.SetPlayerHp(1f);

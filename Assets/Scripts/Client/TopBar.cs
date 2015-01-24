@@ -49,6 +49,58 @@ public class TopBar : MonoBehaviour
         AttackSpeedText.text = attackSpeed + "";
     }
 
+    public void SetDmg(float dmg, float addDmg)
+    {
+        var txt = dmg + "";
+
+        if (addDmg > 0)
+        {
+            txt += "<color=green>+" + addDmg + "</color>";
+        }
+        else if (addDmg < -0.001f)
+        {
+            txt += "<color=red>-" + addDmg + "</color>";
+        }
+        else
+        {
+
+        }
+
+        DmgText.text = txt;
+    }
+
+    public void SetDef(float def, float addDef)
+    {
+        var txt = def + "";
+
+        if (addDef > 0)
+        {
+            txt += "<color=green>+" + addDef + "</color>";
+        }
+        else if (addDef < -0.001f)
+        {
+            txt += "<color=red>-" + addDef + "</color>";
+        }
+
+        Deftext.text = txt;
+    }
+
+    public void SetAttackSpeed(float attackSpeed, float addAttackSpeed)
+    {
+        var txt = attackSpeed + "";
+
+        if (addAttackSpeed > 0)
+        {
+            txt += "<color=green>+" + addAttackSpeed + "</color>";
+        }
+        else if (addAttackSpeed < -0.001f)
+        {
+            txt += "<color=red>-" + addAttackSpeed + "</color>";
+        }
+
+        AttackSpeedText.text = txt;
+    }
+
     public void Show()
     {
         gameObject.SetActive(true);

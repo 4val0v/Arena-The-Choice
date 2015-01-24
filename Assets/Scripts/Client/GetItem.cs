@@ -27,6 +27,7 @@ public class GetItem : MonoBehaviour
     public readonly List<StockItemView> StockItems = new List<StockItemView>();
 
     public event Action<int> ItemEquipClicked = delegate { };
+    public event Action<int> ItemSelected = delegate { };
 
     public bool IsMyTurn { get; private set; }
 
@@ -193,6 +194,8 @@ public class GetItem : MonoBehaviour
         }
 
         UpdateItemDescription(GetDescriptionText(view.ItemData));
+
+        ItemSelected(view.ItemData.Id);
 
         EquipButtonVisible(view.IsSelected && !view.IsEquipped && IsMyTurn);
     }
