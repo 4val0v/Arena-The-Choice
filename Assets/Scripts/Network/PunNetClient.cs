@@ -46,10 +46,13 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
         {
             PlayerData = new PlayerData
             {
-                Name = "RndName"
+                Class = CharacterClass.None
             };
 
-            EnemyData = new PlayerData();
+            EnemyData = new PlayerData
+            {
+                Class = CharacterClass.None
+            };
 
             ChangeStatus(NetStatus.Connected);
         });
