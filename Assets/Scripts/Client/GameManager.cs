@@ -52,8 +52,7 @@ public class GameManager : MonoBehaviour
 
     void HandleOnFirstPlayerReceived(int playerId)
     {
-        //id of first 
-        Logger.Log("first player:" + playerId);
+		_screenManager.GetItem.GetComponent<GetItem> ().IsYouFirst = _client.PlayerData.Id == playerId;
     }
 
     void HandleOnEnemyClassUpdated(CharacterClass classId)
