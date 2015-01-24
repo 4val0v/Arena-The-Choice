@@ -21,15 +21,25 @@ public class Connecting : MonoBehaviour {
 		if(enabled)
 		{
 			_time += Time.deltaTime;
-			if (_time > 0.3)
+			if (_time > 1)
 			{
-				_textField.text += ".";
+				_time = 0;
+				if (_added.Length == 3)
+				{
+					_added = ".";
+				}
+				else
+				{
+					_added += ".";
+				}
+				_textField.text = _mainWord + _added;
 			}
 		}
 	}
 
 	private float _time;
 	private string _mainWord = "Connecting";
+	private string _added = ".";
 
 	[SerializeField]
 	private Text _textField;
