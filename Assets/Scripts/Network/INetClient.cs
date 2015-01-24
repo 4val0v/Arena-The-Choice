@@ -86,11 +86,15 @@ public interface INetClient
     /// </summary>
     event Action<string> OnNameUpdated;
 
+    event Action<string> OnEnemyNameUpdated;
+
     /// <summary>
     /// Raise after class updated
     /// First: new class
     /// </summary>
     event Action<CharacterClass> OnClassUpdated;
+
+    event Action<CharacterClass> OnEnemyClassUpdated;
 
     /// <summary>
     /// Raise after random player selection finished

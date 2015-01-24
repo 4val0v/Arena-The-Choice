@@ -28,4 +28,7 @@ MonoBehaviour:
   - PunPickupSimple
   - PunRespawn
   - RequestForPickupTimes
+  - FirstPlayerReceived
+  - BattleStartReceived
+  - StepItemsReceived
   DisableAutoOpenWizard: 0

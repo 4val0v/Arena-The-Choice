@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Management.Instrumentation;
 using UnityEngine;
 
-public class PunNetClient : Photon.PunBehaviour, INetClient, INetServer
+public class PunNetClient : Photon.PunBehaviour, INetClient
 {
     private static INetClient _instance;
 
@@ -23,7 +22,9 @@ public class PunNetClient : Photon.PunBehaviour, INetClient, INetServer
     #region INetClient
     public event Action<NetStatus> OnStatusChanged = delegate { };
     public event Action<string> OnNameUpdated = delegate { };
+    public event Action<string> OnEnemyNameUpdated = delegate { };
     public event Action<CharacterClass> OnClassUpdated = delegate { };
+    public event Action<CharacterClass> OnEnemyClassUpdated = delegate { };
     public event Action<int> OnFirstPlayerReceived = delegate { };
     public event Action<EquipStep, IEnumerable<int>> OnStepItemsReceived = delegate { };
     public event Action<int, int> OnItemEquipped = delegate { };
@@ -163,35 +164,6 @@ public class PunNetClient : Photon.PunBehaviour, INetClient, INetServer
         PhotonNetwork.ConnectUsingSettings("1.0");
     }
 
-    #region INetServer
-    public void SetFirstPlayer(int playerId)
-    {
-        if (IsLocal)
-        {
-            FirstPlayerReceived(playerId);
-        }
-        else
-        {
-            photonView.RPC("FirstPlayerReceived", PhotonTargets.All, playerId);
-        }
-    }
-
-    public void SetStepItems(EquipStep step, IEnumerable<int> items)
-    {
-        OnStepItemsReceived(step, items);
-    }
-
-    public void StartGame()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void FinishGame(int winnerId)
-    {
-        throw new NotImplementedException();
-    }
-    #endregion
-
     #region Photon's callbacks
 
     public override void OnJoinedLobby()
@@ -215,34 +187,47 @@ public class PunNetClient : Photon.PunBehaviour, INetClient, INetServer
     public override void OnJoinedRoom()
     {
         base.OnJoinedRoom();
-    }
 
-    public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
-    {
-        base.OnPhotonPlayerConnected(newPlayer);
+        PhotonNetwork.Instantiate("NetPlayer", Vector3.zero, Quaternion.identity, 0);
 
-        if (PhotonNetwork.playerList.Length == 2 && PhotonNetwork.isMasterClient)
-        {
-            PlayerData.Id = PhotonNetwork.player.ID;
-            
-            EnemyData.Id = newPlayer.ID;
-            EnemyData.Name = newPlayer.name;
-
-            photonView.RPC("BattleStartReceived", PhotonTargets.All);
-        }
+        PhotonNetwork.player.SetName(PlayerData.Name);
+        PhotonNetwork.player.SetClass(PlayerData.Class);
     }
 
     #endregion
 
-    [RPC]
-    public void BattleStartReceived()
+    public void RaiseBattleStarted()
     {
-        OnStatusChanged(NetStatus.ConnectedToBattle);
+        ChangeStatus(NetStatus.ConnectedToBattle);
     }
 
-    [RPC]
-    public void FirstPlayerReceived(int playerId)
+    public void RaiseFirstPlayerStep(int playerId)
     {
         OnFirstPlayerReceived(playerId);
+    }
+
+    public void RaiseStepItems(EquipStep step, IEnumerable<int> items)
+    {
+        OnStepItemsReceived(step, items);
+    }
+
+    public void RaiseNameUpdated()
+    {
+        OnNameUpdated(PlayerData.Name);
+    }
+
+    public void RaiseEnemyNameUpdated()
+    {
+        OnNameUpdated(EnemyData.Name);
+    }
+
+    public void RaiseClassUpdated()
+    {
+        OnClassUpdated(PlayerData.Class);
+    }
+
+    public void RaiseEnemyClassUpdated()
+    {
+        OnEnemyClassUpdated(EnemyData.Class);
     }
 }
