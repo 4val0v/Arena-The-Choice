@@ -4,13 +4,20 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class Arena : MonoBehaviour
+
+	void Awake()
 {
+		foreach (var item in _skillButtons) 
+		{
+			item.OnClickToBtn = UseAbbility;
+		}
+	}
 
-    void Start()
-    {
-
-    }
-
+	private void UseAbbility(AbilityData data)
+	{
+		_client.UseAbility (data.Id);
+	}
+	
     void Update()
     {
         FightCounter();
@@ -74,6 +81,10 @@ public class Arena : MonoBehaviour
         _timerText.text = "" + time;
         _timerText.gameObject.SetActive(true);
         ActivateAllBtns(false);
+		for (int i = 0; i < 3; i++) 
+		{
+			_skillButtons[i].SetAbillity(ItemsProvider.GetItem(_client.PlayerData.EquippedItems[i]).Ability);
+		}
     }
 
     void OnDisable()

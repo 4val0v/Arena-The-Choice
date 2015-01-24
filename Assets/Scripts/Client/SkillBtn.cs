@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
 
 public class SkillBtn : MonoBehaviour {
 
@@ -26,6 +27,7 @@ public class SkillBtn : MonoBehaviour {
 	public void SetAbillity(AbilityData abbility)
 	{
 		_abl = abbility;
+		_btn.image.sprite = _abl.Icon;
 	}
 
 	void OnEnable()
@@ -40,12 +42,23 @@ public class SkillBtn : MonoBehaviour {
 		_cdwn = _abl.Cooldown;
 	}
 
+	public void OnClick()
+	{
+		StartCouldown ();
+		if (OnClickToBtn != null)
+		{
+			OnClickToBtn.Invoke(_abl);
+		}
+	}
+
 	public void ActivateBtn(bool isActive)
 	{
 		_btn.interactable = isActive;
 	}
 
 	private AbilityData _abl;
+
+	public Action<AbilityData> OnClickToBtn;
 
 	private float _cdwn;
 
