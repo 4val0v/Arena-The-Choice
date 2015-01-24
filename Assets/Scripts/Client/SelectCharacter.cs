@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using System;
 
 public class SelectCharacter : MonoBehaviour {
 
@@ -21,11 +22,16 @@ public class SelectCharacter : MonoBehaviour {
 		get;
 	}
 
-	private void GetIt()
+	public void GetIt()
 	{
-		//Character was selected
+		if (OnCharacterSelected != null)
+		{
+			OnCharacterSelected.Invoke(CharacterIndex);
+		}
 	}
 
 	[SerializeField]
 	private List<Button> _buttons;
+
+	public Action<int> OnCharacterSelected;
 }

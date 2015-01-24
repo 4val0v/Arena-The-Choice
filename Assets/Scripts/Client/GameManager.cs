@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
         _client.OnItemEquipped += HandleOnItemEquipped;
         _client.OnGameStarted += HandleOnGameStarted;
         _client.OnGameFinished += HandleOnGameFinished;
+
+		_screenManager.CharacterChangeScreen.GetComponent<SelectCharacter> ().OnCharacterSelected += SelectClass;
     }
 
     void Start()
@@ -92,6 +94,12 @@ public class GameManager : MonoBehaviour
     {
         _client.CreateOrJoinToBattle(isBot ? GameMode.PvE : GameMode.PvP);
     }
+
+	public void SelectClass(int num)
+	{
+		_screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
+		_client.SetClass((CharacterClass) num);
+	}
 
     private string _playerName = "";
 

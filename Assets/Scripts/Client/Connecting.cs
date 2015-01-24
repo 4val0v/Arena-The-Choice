@@ -37,6 +37,11 @@ public class Connecting : MonoBehaviour {
 		}
 	}
 
+	public void ChangeMainWord(string word)
+	{
+		_mainWord = word;
+	}
+
 	private float _time;
 	private string _mainWord = "Connecting";
 	private string _added = ".";

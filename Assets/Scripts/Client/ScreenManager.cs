@@ -7,7 +7,6 @@ public class ScreenManager : MonoBehaviour
 
 	void Start () 
 	{
-		
 	}
 	
 	void Update () 
@@ -36,18 +35,6 @@ public class ScreenManager : MonoBehaviour
 		_currentScreen.SetActive(true);
 	}
 
-	public GameObject MainScr {
-		get {
-			return _mainScreen;
-		}
-	}
-
-	public GameObject CharactersScr {
-		get {
-			return _characterChangeScreen;
-		}
-	}
-
 	private void HideAll()
 	{
 		foreach (var screen in AllScreens ()) 
@@ -62,6 +49,12 @@ public class ScreenManager : MonoBehaviour
 		yield return _characterChangeScreen;
 	}
 
+	public GameObject CharacterChangeScreen 
+	{
+		get {
+			return _characterChangeScreen;
+		}
+	}
 
 	[SerializeField]
 	private GameObject _mainScreen;
