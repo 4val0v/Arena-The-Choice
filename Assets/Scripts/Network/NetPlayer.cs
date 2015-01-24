@@ -36,10 +36,10 @@ public static class NetPlExtension
 
     public static void SetClass(this PhotonPlayer player, CharacterClass name)
     {
-        PhotonNetwork.player.SetCustomProperties(new Hashtable() { { NameProp, (int)name } });
+        PhotonNetwork.player.SetCustomProperties(new Hashtable() { { ClassProp, (int)name } });
     }
 
-   // public static int GetHp
+    // public static int GetHp
 }
 public class NetPlayer : Photon.PunBehaviour
 {
