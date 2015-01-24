@@ -148,7 +148,7 @@ public class Arena : MonoBehaviour
 		string scrText = "";
 		if (dmg == 0)
 		{
-			_color = Color.green;
+			_color = Color.red;
 			scrText = Texts.MISS;
 		}
 		else if (dmg > 0)
@@ -172,8 +172,8 @@ public class Arena : MonoBehaviour
 		string scrText = "";
 		if (dmg == 0)
 		{
-			scrText = Texts.MISS;
 			_color = Color.red;
+			scrText = Texts.MISS;
 		}
 		else if (dmg > 0)
 		{
