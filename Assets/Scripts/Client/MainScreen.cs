@@ -83,7 +83,6 @@ public class MainScreen : MonoBehaviour
 
 	public void OnSelectField()
 	{
-		Logger.Log ("Select Field");
 		_isChangeName = true;
 	}
 

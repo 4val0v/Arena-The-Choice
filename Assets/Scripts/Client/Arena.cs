@@ -27,7 +27,12 @@ public class Arena : MonoBehaviour {
 		{
 			TimeBeforeNextKick();
 			timerOfFight = 0;
-			_client.SendAttack(0, (int)_client.PlayerData.Dmg); 
+			_dmg = (int)_client.PlayerData.Dmg;
+			if (Random.value > _client.PlayerData.Accuracy)
+			{
+				_dmg = 0;
+			}
+			_client.SendAttack(0, _dmg); 
 		}
 	}
 
@@ -101,6 +106,7 @@ public class Arena : MonoBehaviour {
 		}
 	}
 
+	private int _dmg;
 	private bool _fightStarted;
 	private float timerOfFight;
 	private float _timeBeforeNextKick;
