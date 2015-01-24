@@ -69,6 +69,12 @@ public class ScreenManager : MonoBehaviour
 		}
 	}
 
+	public GameObject MainScreen {
+		get {
+			return _mainScreen;
+		}
+	}
+
 	public TopBar TopBar {
 		get {
 			return _topBar;

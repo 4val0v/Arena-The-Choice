@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -101,9 +102,7 @@ public class GameManager : MonoBehaviour
                 break;
             case NetStatus.ConnectedToBattle:
                 _screenManager.ChangeScreen(ScreenManager.Screens.CharacterChange);
-
-                _playerName = "Pl" + UnityEngine.Random.Range(0, short.MaxValue);
-                _client.UpdateName(_playerName);
+				_client.UpdateName(_screenManager.MainScreen.GetComponent<MainScreen>().NameOfPlayer);
                 break;
             default:
                 break;
@@ -121,8 +120,6 @@ public class GameManager : MonoBehaviour
         _screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
         _client.SetClass((CharacterClass)num);
     }
-
-    private string _playerName = "";
 
     private INetClient _client;
     [SerializeField]
