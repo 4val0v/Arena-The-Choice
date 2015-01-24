@@ -48,11 +48,15 @@ public class GameManager : MonoBehaviour
     {
         //create screen change item
         Logger.Log("Current step:" + step + ", items...");
+
+        var getItem = _screenManager.GetItem.GetComponent<GetItem>();
+
+        getItem.UpdateStock(step, items);
     }
 
     void HandleOnFirstPlayerReceived(int playerId)
     {
-		_screenManager.GetItem.GetComponent<GetItem> ().IsYouFirst = _client.PlayerData.Id == playerId;
+        _screenManager.GetItem.GetComponent<GetItem>().IsYouFirst = _client.PlayerData.Id == playerId;
     }
 
     void HandleOnEnemyClassUpdated(CharacterClass classId)
@@ -101,7 +105,7 @@ public class GameManager : MonoBehaviour
                 break;
             case NetStatus.ConnectedToBattle:
                 _screenManager.ChangeScreen(ScreenManager.Screens.CharacterChange);
-				_client.UpdateName(_screenManager.MainScreen.GetComponent<MainScreen>().NameOfPlayer);
+                _client.UpdateName(_screenManager.MainScreen.GetComponent<MainScreen>().NameOfPlayer);
                 break;
             default:
                 break;
