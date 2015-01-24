@@ -5,19 +5,19 @@ using System.Collections.Generic;
 
 public class Arena : MonoBehaviour
 {
-	void Awake()
-	{
-		foreach (var item in _skillButtons) 
-		{
-			item.OnClickToBtn = UseAbbility;
-		}
-	}
+    void Awake()
+    {
+        foreach (var item in _skillButtons)
+        {
+            item.OnClickToBtn = UseAbbility;
+        }
+    }
 
-	private void UseAbbility(AbilityData data)
-	{
-		_client.UseAbility ((int)data.Id);
-	}
-	
+    private void UseAbbility(AbilityData data)
+    {
+        _client.UseAbility((int)data.Id);
+    }
+
     void Update()
     {
         FightCounter();
@@ -33,28 +33,30 @@ public class Arena : MonoBehaviour
         timerOfFight += Time.deltaTime;
 
         if (_client.PlayerData != null)
-            foreach (var ability in _client.PlayerData.Abilities)
+            for (int i = _client.PlayerData.Abilities.Count - 1; i >= 0; i--)
             {
+                var ability = _client.PlayerData.Abilities[i];
                 ability.Update();
             }
 
         if (timerOfFight >= _timeBeforeNextKick)
         {
             if (_client.PlayerData != null)
-                foreach (var ability in _client.PlayerData.Abilities)
+                for (int i = _client.PlayerData.Abilities.Count - 1; i >= 0; i--)
                 {
+                    var ability = _client.PlayerData.Abilities[i];
                     ability.UpdateOnAttack();
                 }
 
             TimeBeforeNextKick();
             timerOfFight = 0;
-			_dmg = (int)_client.PlayerData.Dmg;
-			if (Random.value > _client.PlayerData.Accuracy)
-			{
-				_dmg = 0;
+            _dmg = (int)_client.PlayerData.Dmg;
+            if (Random.value > _client.PlayerData.Accuracy)
+            {
+                _dmg = 0;
+            }
+            _client.SendAttack(0, _dmg);
         }
-			_client.SendAttack(0, _dmg); 
-		}
     }
 
     private void ScreenTimeCounter()
@@ -81,10 +83,10 @@ public class Arena : MonoBehaviour
         _timerText.text = "" + time;
         _timerText.gameObject.SetActive(true);
         ActivateAllBtns(false);
-		for (int i = 0; i < 3; i++) 
-		{
-			_skillButtons[i].SetAbillity(ItemsProvider.GetItem(_client.PlayerData.EquippedItems[i]).Ability);
-		}
+        for (int i = 0; i < 3; i++)
+        {
+            _skillButtons[i].SetAbillity(ItemsProvider.GetItem(_client.PlayerData.EquippedItems[i]).Ability);
+        }
     }
 
     void OnDisable()
@@ -131,7 +133,7 @@ public class Arena : MonoBehaviour
         }
     }
 
-	private int _dmg;
+    private int _dmg;
     private bool _fightStarted;
     private float timerOfFight;
     private float _timeBeforeNextKick;
