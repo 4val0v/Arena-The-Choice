@@ -75,19 +75,21 @@ public class MainScreen : MonoBehaviour {
 	// Update is called once per frame
 	void Update () 
 	{
-	
+		
 	}
 
 	public string NameOfPlayer 
 	{
 		get 
 		{
-			return _inputField.text;
+			return _textInField.text;
 		}
 	}
 
 	private List<string> _names;
 
 	[SerializeField]
-	private Text _inputField;
+	private Text _textInField;
+	[SerializeField]
+	private Text _textInField;
 }
