@@ -17,7 +17,7 @@ public class GetItem : MonoBehaviour
     [SerializeField]
     private Text _itemDescriptionText;
 
-    [SerializeField] 
+    [SerializeField]
     private Text _equipStepText;
 
     private readonly List<StockItemView> _stockItems = new List<StockItemView>();
@@ -35,6 +35,8 @@ public class GetItem : MonoBehaviour
 
     void OnEnable()
     {
+        _stockGrid.transform.parent.gameObject.SetActive(false);
+
         _whoIsTheFirst.Show();
         if (IsYouFirst)
         {
@@ -50,6 +52,8 @@ public class GetItem : MonoBehaviour
     {
         Logger.Log("End First playerAnim");
         _whoIsTheFirst.Hide();
+
+        _stockGrid.transform.parent.gameObject.SetActive(true);
     }
 
     public void UpdateStock(EquipStep step, IEnumerable<int> items)
@@ -72,6 +76,8 @@ public class GetItem : MonoBehaviour
 
             var script = newView.GetComponent<StockItemView>();
             script.SetData(itemData);
+
+            newView.transform.localScale = Vector3.one;
 
             _stockItems.Add(script);
         }
