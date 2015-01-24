@@ -29,4 +29,14 @@ public class TopBar : MonoBehaviour
     {
         EnemyHp.value = percent;
     }
+
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
 }
