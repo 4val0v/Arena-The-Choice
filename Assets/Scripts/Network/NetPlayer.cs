@@ -168,6 +168,11 @@ public class NetPlayer : Photon.PunBehaviour
     {
         photonView.RPC("AbilityUsedReceived", PhotonTargets.All, abilityId);
     }
+
+    public void AdjHp(int hp)
+    {
+        photonView.RPC("AdjHpReceived", PhotonTargets.All, hp);
+    }
     #region handlers
 
     [RPC]
@@ -260,10 +265,12 @@ public class NetPlayer : Photon.PunBehaviour
     {
         if (photonView.isMine)
         {
+            dmg -= (int)Client.EnemyData.Def;
             Client.RaiseEnemyDmgReceived(weaponId, dmg);
         }
         else
         {
+            dmg -= (int)Client.PlayerData.Def;
             Client.RaiseDmgReceived(weaponId, dmg);
         }
 
@@ -290,6 +297,19 @@ public class NetPlayer : Photon.PunBehaviour
         else
         {
             Client.RaiseAbilityUsed(Enemy.Id, abilityId);
+        }
+    }
+
+    [RPC]
+    public void AdjHpReceived(int hp)
+    {
+        if (photonView.isMine)
+        {
+            Client.PlayerData.CurrentHp += hp;
+        }
+        else
+        {
+            Client.EnemyData.CurrentHp += hp;
         }
     }
     #endregion
