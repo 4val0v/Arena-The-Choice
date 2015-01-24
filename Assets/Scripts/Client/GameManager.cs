@@ -34,12 +34,15 @@ public class GameManager : MonoBehaviour
     {
         //onPlayerWin;
         Logger.Log("game finish. winner id:" + playrWinID);
+
+        _screenManager.FightFinished.SetWinner(_client.PlayerData.Id == playrWinID);
+        _screenManager.ChangeScreen(ScreenManager.Screens.FightFinished);
     }
 
     void HandleOnGameStarted()
     {
         Logger.Log("Game started!");
-		_screenManager.Arena.Client = _client;
+        _screenManager.Arena.Client = _client;
         _screenManager.ChangeScreen(ScreenManager.Screens.Arena);
     }
 
@@ -83,6 +86,8 @@ public class GameManager : MonoBehaviour
         CheckLastSelectionOfCharacter();
         //change enemy character 
         Logger.Log("enemy classId:" + classId);
+        _client.EnemyData.CurrentHp = _client.EnemyData.MaxHp;
+        _screenManager.TopBar.SetEnemyHp(1f);
     }
 
     void HandleOnClassUpdated(CharacterClass obj)
@@ -92,6 +97,9 @@ public class GameManager : MonoBehaviour
         _screenManager.TopBar.SetDmg(CharacterDataProviders.GetBaseData(obj).BaseDmg);
         _screenManager.TopBar.SetDef(CharacterDataProviders.GetBaseData(obj).BaseDef);
         _screenManager.TopBar.SetAttackSpeed(CharacterDataProviders.GetBaseData(obj).BaseAttackSpeed);
+
+        _client.PlayerData.CurrentHp = _client.PlayerData.MaxHp;
+        _screenManager.TopBar.SetPlayerHp(1f);
     }
 
     void HandleOnNameUpdated(string name)

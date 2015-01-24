@@ -33,4 +33,7 @@ MonoBehaviour:
   - StepItemsReceived
   - GameStartReceived
   - ItemEquippedReceived
+  - AbilityUsedReceived
+  - AttackReceived
+  - GameFinishedReceived
   DisableAutoOpenWizard: 0

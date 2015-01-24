@@ -51,13 +51,11 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
             {
                 Class = CharacterClass.None,
             };
-            PlayerData.CurrentHp = PlayerData.MaxHp;
-
+            
             EnemyData = new PlayerData
             {
                 Class = CharacterClass.None
             };
-            EnemyData.CurrentHp = EnemyData.MaxHp;
 
             ChangeStatus(NetStatus.Connected);
         });

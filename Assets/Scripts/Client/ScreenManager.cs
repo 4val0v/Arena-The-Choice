@@ -26,12 +26,17 @@ public class ScreenManager : MonoBehaviour
             case Screens.GetItem:
                 _topBar.Show();
                 _currentScreen = _getItem;
-				break;
-			case Screens.Arena:
-				_topBar.Show();
-				_currentScreen = _arena;
+                break;
+            case Screens.Arena:
+                _topBar.Show();
+                _currentScreen = _arena;
+                break;
+            case Screens.FightFinished:
+                _topBar.Hide();
+                _currentScreen = _fightFinished;
                 break;
         }
+
         _currentScreen.SetActive(true);
     }
 
@@ -49,17 +54,18 @@ public class ScreenManager : MonoBehaviour
         yield return _characterChangeScreen;
         yield return _connecting;
         yield return _getItem;
+        yield return _fightFinished;
     }
 
-	public SelectCharacter CharacterChangeScreen
+    public SelectCharacter CharacterChangeScreen
     {
         get
         {
-			if(_selectCharacterComp == null)
-			{
-				_selectCharacterComp = _characterChangeScreen.GetComponent<SelectCharacter>();
-			}
-			return _selectCharacterComp;
+            if (_selectCharacterComp == null)
+            {
+                _selectCharacterComp = _characterChangeScreen.GetComponent<SelectCharacter>();
+            }
+            return _selectCharacterComp;
         }
     }
 
@@ -67,11 +73,11 @@ public class ScreenManager : MonoBehaviour
     {
         get
         {
-			if (_connectingComp == null)
-			{
-				_connectingComp = _connecting.GetComponent<Connecting>();
-			}
-			return _connectingComp;
+            if (_connectingComp == null)
+            {
+                _connectingComp = _connecting.GetComponent<Connecting>();
+            }
+            return _connectingComp;
         }
     }
 
@@ -83,28 +89,41 @@ public class ScreenManager : MonoBehaviour
         }
     }
 
-	public Arena Arena {
-		get 
-		{
-			if (_arenaComp == null)
-			{
-				_arenaComp = _arena.GetComponent<Arena>();
-			}
-			return _arenaComp;
-		}
-	}
+    public Arena Arena
+    {
+        get
+        {
+            if (_arenaComp == null)
+            {
+                _arenaComp = _arena.GetComponent<Arena>();
+            }
+            return _arenaComp;
+        }
+    }
 
     public GetItem GetItem
     {
         get
         {
-			if (_getItemComp == null)
-			{
-				_getItemComp = _getItem.GetComponent<GetItem>();
-			}
-			return _getItemComp;
-		}
-	}
+            if (_getItemComp == null)
+            {
+                _getItemComp = _getItem.GetComponent<GetItem>();
+            }
+            return _getItemComp;
+        }
+    }
+
+    public FightFinished FightFinished
+    {
+        get
+        {
+            if (_fightFinishedComp == null)
+            {
+                _fightFinishedComp = _getItem.GetComponent<FightFinished>();
+            }
+            return _fightFinishedComp;
+        }
+    }
 
     public TopBar TopBar
     {
@@ -119,10 +138,11 @@ public class ScreenManager : MonoBehaviour
         ConnectingScreen.ChangeMainWord(text);
     }
 
-	private GetItem _getItemComp;
-	private Connecting _connectingComp;
-	private SelectCharacter _selectCharacterComp;
-	private Arena 		_arenaComp;
+    private GetItem _getItemComp;
+    private Connecting _connectingComp;
+    private SelectCharacter _selectCharacterComp;
+    private Arena _arenaComp;
+    private FightFinished _fightFinishedComp;
 
     [SerializeField]
     private GameObject _mainScreen;
@@ -139,8 +159,11 @@ public class ScreenManager : MonoBehaviour
     [SerializeField]
     private TopBar _topBar;
 
-	[SerializeField]
-	private GameObject _arena;
+    [SerializeField]
+    private GameObject _arena;
+
+    [SerializeField]
+    private GameObject _fightFinished;
 
     private GameObject _currentScreen;
 
@@ -150,6 +173,7 @@ public class ScreenManager : MonoBehaviour
         CharacterChange,
         Connecting,
         GetItem,
-		Arena
+        Arena,
+        FightFinished,
     }
 }
