@@ -4,9 +4,9 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class Arena : MonoBehaviour
-
-	void Awake()
 {
+	void Awake()
+	{
 		foreach (var item in _skillButtons) 
 		{
 			item.OnClickToBtn = UseAbbility;
@@ -15,7 +15,7 @@ public class Arena : MonoBehaviour
 
 	private void UseAbbility(AbilityData data)
 	{
-		_client.UseAbility (data.Id);
+		_client.UseAbility ((int)data.Id);
 	}
 	
     void Update()
