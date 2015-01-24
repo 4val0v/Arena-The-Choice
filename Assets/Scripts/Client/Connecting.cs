@@ -17,7 +17,7 @@ public class Connecting : MonoBehaviour {
 		{
 			_mainWord = Texts.CONNECTING;
 		}
-		_tempChange = true;
+		_tempChange = false;
 	}
 	
 	// Update is called once per frame
