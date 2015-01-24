@@ -49,14 +49,12 @@ public class GameManager : MonoBehaviour
         //create screen change item
         Logger.Log("Current step:" + step + ", items...");
 
-        var getItem = _screenManager.GetItem.GetComponent<GetItem>();
-
-        getItem.UpdateStock(step, items);
+		_screenManager.GetItem.UpdateStock(step, items);
     }
 
     void HandleOnFirstPlayerReceived(int playerId)
     {
-        _screenManager.GetItem.GetComponent<GetItem>().IsYouFirst = _client.PlayerData.Id == playerId;
+        _screenManager.GetItem.IsYouFirst = _client.PlayerData.Id == playerId;
     }
 
     void HandleOnEnemyClassUpdated(CharacterClass classId)

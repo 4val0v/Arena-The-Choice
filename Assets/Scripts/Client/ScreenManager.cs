@@ -70,13 +70,17 @@ public class ScreenManager : MonoBehaviour
         }
     }
 
-    public GameObject GetItem
+    public GetItem GetItem
     {
         get
         {
-            return _getItem;
-        }
-    }
+			if (_getItemComp == null)
+			{
+				_getItemComp = _getItem.GetComponent<GetItem>();
+			}
+			return _getItemComp;
+		}
+	}
 
     public TopBar TopBar
     {
@@ -90,6 +94,8 @@ public class ScreenManager : MonoBehaviour
     {
         ConnectingScreen.GetComponent<Connecting>().ChangeMainWord(text);
     }
+
+	private GetItem _getItemComp;
 
     [SerializeField]
     private GameObject _mainScreen;
