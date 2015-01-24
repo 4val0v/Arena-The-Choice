@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
         _client.OnStatusChanged += HandleOnStatusChanged;
         _client.OnEnemyNameUpdated += HandleOnEnemyNameUpdated;
         _client.OnEnemyClassUpdated += HandleOnEnemyClassUpdated;
+        _client.OnClassUpdated += HandleOnClassUpdated;
         _client.OnFirstPlayerReceived += HandleOnFirstPlayerReceived;
         _client.OnStepItemsReceived += HandleOnStepItemsReceived;
         _client.OnItemEquipped += HandleOnItemEquipped;
@@ -58,6 +59,11 @@ public class GameManager : MonoBehaviour
         //change enemy character 
         Logger.Log("enemy classId:" + classId);
     }
+	
+	void HandleOnClassUpdated (CharacterClass obj)
+	{
+		
+	}
 
     void HandleOnEnemyNameUpdated(string name)
     {
