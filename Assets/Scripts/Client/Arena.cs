@@ -157,7 +157,7 @@ public class Arena : MonoBehaviour
 		}
 		else
 		{
-			scrText = "-"+dmg;
+			scrText = ""+dmg;
 			_color = Color.red;
 		}
 
