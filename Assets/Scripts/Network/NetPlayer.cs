@@ -1,4 +1,5 @@
-﻿using ExitGames.Client.Photon;
+﻿using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using UnityEngine;
 
 public static class NetPlExtension
@@ -52,12 +53,21 @@ public class NetPlayer : Photon.PunBehaviour
 
     public bool IsMaster { get { return photonView.owner.isMasterClient; } }
 
+    private readonly static List<NetPlayer> _players = new List<NetPlayer>();
+
     void Awake()
     {
         if (photonView.owner.isMasterClient)
             _master = this;
         else
             _other = this;
+
+        _players.Add(this);
+    }
+
+    void OnDestroy()
+    {
+        _players.Remove(this);
     }
 
     void Update()
@@ -68,7 +78,7 @@ public class NetPlayer : Photon.PunBehaviour
         if (!IsMaster)
             return;
 
-        if (Client.Status == NetStatus.ConnectingToBattle && Room.playerCount == 2)
+        if (Client.Status == NetStatus.ConnectingToBattle && _players.Count == 2)
         {
             SendStartBattle();
         }
@@ -78,7 +88,7 @@ public class NetPlayer : Photon.PunBehaviour
     {
         Client.PlayerData.Id = PhotonNetwork.player.ID;
 
-        photonView.RPC("BattleStartReceived", PhotonTargets.All, Client.PlayerData.Id, _other.Id);
+        photonView.RPC("BattleStartReceived", PhotonTargets.All, Id, _other.Id);
     }
 
     private void SetFirstPlayer()
@@ -91,7 +101,7 @@ public class NetPlayer : Photon.PunBehaviour
     private void SetStepItems(EquipStep step)
     {
         int[] items = new[] { 1 };
-        photonView.RPC("FirstPlayerReceived", PhotonTargets.All, (int)step, items);
+        photonView.RPC("StepItemsReceived", PhotonTargets.All, (int)step, items);
     }
 
     [RPC]
