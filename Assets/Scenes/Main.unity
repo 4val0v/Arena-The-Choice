@@ -169,7 +169,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22447622, guid: 19db8d2e3c61542378c692b7d9cf1532, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 22447622, guid: 19db8d2e3c61542378c692b7d9cf1532, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -3204,7 +3204,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 5
 --- !u!1 &1203579502
 GameObject:
   m_ObjectHideFlags: 0
@@ -3458,7 +3458,7 @@ RectTransform:
   - {fileID: 2009822541}
   - {fileID: 810498723}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -3722,7 +3722,7 @@ RectTransform:
   m_Children:
   - {fileID: 1789131931}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -5945,7 +5945,7 @@ RectTransform:
   - {fileID: 1708908682}
   - {fileID: 1793433137}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}

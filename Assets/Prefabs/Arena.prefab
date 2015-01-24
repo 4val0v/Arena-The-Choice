@@ -228,6 +228,7 @@ MonoBehaviour:
   - {fileID: 11482056}
   - {fileID: 11446250}
   - {fileID: 11446252}
+  _scoresPrefab: {fileID: 125768, guid: b6dc01ce1a53e48dbbb31319b260006d, type: 2}
 --- !u!114 &11446244
 MonoBehaviour:
   m_ObjectHideFlags: 1
