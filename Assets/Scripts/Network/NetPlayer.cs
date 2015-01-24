@@ -154,14 +154,19 @@ public class NetPlayer : Photon.PunBehaviour
         photonView.RPC("GameStartReceived", PhotonTargets.AllViaServer);
     }
 
+    private void SendGameFinished(int winnerId)
+    {
+        photonView.RPC("GameFinishedReceived", PhotonTargets.All, winnerId);
+    }
+
     public void SendAttack(int weaponId, int dmg)
     {
-        photonView.RPC("AttackReceived", PhotonTargets.All, weaponId, dmg);
+        photonView.RPC("AttackReceived", PhotonTargets.AllViaServer, weaponId, dmg);
     }
 
     public void SendUseAbility(int abilityId)
     {
-        photonView.RPC("AbilityUsedReceived", PhotonTargets.All, abilityId);
+        photonView.RPC("AbilityUsedReceived", PhotonTargets.AllViaServer, abilityId);
     }
     #region handlers
 
@@ -245,6 +250,12 @@ public class NetPlayer : Photon.PunBehaviour
     }
 
     [RPC]
+    public void GameFinishedReceived(int winnerId)
+    {
+        Client.RaiseGameFinished(winnerId);
+    }
+
+    [RPC]
     public void AttackReceived(int weaponId, int dmg)
     {
         if (photonView.isMine)
@@ -254,6 +265,18 @@ public class NetPlayer : Photon.PunBehaviour
         else
         {
             Client.RaiseDmgReceived(weaponId, dmg);
+        }
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            if (Client.PlayerData.CurrentHp <= 0.01f)
+            {
+                SendGameFinished(Client.EnemyData.Id);
+            }
+            else if (Client.EnemyData.CurrentHp <= 0.01f)
+            {
+                SendGameFinished(Client.PlayerData.Id);
+            }
         }
     }
 

@@ -12,6 +12,25 @@ public class PlayerData
 
     public CharacterData BaseData { get { return CharacterDataProviders.GetBaseData(Class); } }
 
+    private float _hp;
+
+    public float CurrentHp
+    {
+        get { return _hp; }
+        set
+        {
+            _hp = value;
+
+            if (_hp < 0)
+                _hp = 0;
+        }
+    }
+
+    public float MaxHp
+    {
+        get { return BaseData.BaseHp; }
+    }
+
     public float Def
     {
         get

@@ -18,8 +18,10 @@ public class GameManager : MonoBehaviour
         _client.OnGameStarted += HandleOnGameStarted;
         _client.OnGameFinished += HandleOnGameFinished;
         _client.OnNameUpdated += HandleOnNameUpdated;
+        _client.OnDmgReceived += HandleOnDmgReceived;
+        _client.OnEnemyDmgReceived += HandleOnEnemyDmgReceived;
 
-		_screenManager.CharacterChangeScreen.OnCharacterSelected += SelectClass;
+        _screenManager.CharacterChangeScreen.OnCharacterSelected += SelectClass;
         _screenManager.GetItem.ItemEquipClicked += GetItemOnItemEquipClicked;
     }
 
@@ -100,6 +102,20 @@ public class GameManager : MonoBehaviour
     void HandleOnEnemyNameUpdated(string name)
     {
         _screenManager.TopBar.UpdateEnemyName(name);
+    }
+
+    private void HandleOnEnemyDmgReceived(int weaponId, int dmg)
+    {
+        _client.EnemyData.CurrentHp -= dmg;
+
+        _screenManager.TopBar.SetEnemyHp(_client.EnemyData.CurrentHp / _client.EnemyData.MaxHp);
+    }
+
+    private void HandleOnDmgReceived(int weaponId, int dmg)
+    {
+        _client.PlayerData.CurrentHp -= dmg;
+
+        _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp);
     }
 
     private void GetItemOnItemEquipClicked(int i)
