@@ -25,7 +25,9 @@ public class Arena : MonoBehaviour {
 		timerOfFight += Time.deltaTime;
 		if(timerOfFight >= _timeBeforeNextKick)
 		{
-
+			TimeBeforeNextKick();
+			timerOfFight = 0;
+			_client.SendAttack(0, (int)_client.PlayerData.Dmg); 
 		}
 	}
 
@@ -87,7 +89,7 @@ public class Arena : MonoBehaviour {
 
 	void TimeBeforeNextKick()
 	{
-		_timeBeforeNextKick = _client.PlayerData
+		_timeBeforeNextKick = 1 / _client.PlayerData.AttackSpeed;
 	}
 
 	public INetClient Client
