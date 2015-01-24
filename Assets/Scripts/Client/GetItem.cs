@@ -49,9 +49,36 @@ public class GetItem : MonoBehaviour
 		_whoIsTheFirst.Hide ();
 	}
 
-    public void UpdateStock(IEnumerable<int> items)
-    {
-        //clear all
-        ClearStock();
+	public void UpdateStock(IEnumerable<int> items)
+	{
+		//clear all
+		ClearStock();
+		
+		//create item
+		foreach (var itemId in items)
+		{
+			var itemData = ItemsProvider.GetItem(itemId);
+			
+			var newView = Instantiate(_stockItemPref) as GameObject;
+			
+			((RectTransform)newView.transform).SetParent(_stockGrid.transform);
+			
+			_stockItems.Add(newView.GetComponent<StockItemView>());
+		}
+	}
 
+	private void ClearStock()
+	{
+		foreach (var child in _stockItems)
+		{
+			DestroyObject(child.gameObject);
+		}
+		
+		_stockItems.Clear();
+	}
+	
+	public void SelectItem(int id)
+	{
+		
+	}
 }
