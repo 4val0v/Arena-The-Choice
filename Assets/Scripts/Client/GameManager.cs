@@ -58,6 +58,8 @@ public class GameManager : MonoBehaviour
         Logger.Log("Current step:" + step + ", items...");
 
         _screenManager.GetItem.UpdateStock(step, items);
+
+        _screenManager.GetItem.UpdateSelection();
     }
 
     void HandleOnFirstPlayerReceived(int playerId)
@@ -101,7 +103,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            _screenManager.GetItem.SetTurn(!_screenManager.GetItem.IsMyTurn);
+            //_screenManager.GetItem.SetTurn(!_screenManager.GetItem.IsMyTurn);
         }
     }
 

@@ -55,7 +55,7 @@ public class GetItem : MonoBehaviour
             _whoIsTheFirst.Play("enemy");
         }
 
-        SetTurn(IsYouFirst);
+        SetTurn(false);
     }
 
     private void EndFirstPlayerAnim()
@@ -64,26 +64,40 @@ public class GetItem : MonoBehaviour
         _whoIsTheFirst.Hide();
 
         _stockGrid.transform.parent.gameObject.SetActive(true);
+
+        foreach (var view in StockItems)
+        {
+            view.IsEquipped = false;
+            view.IsSelected = false;
+        }
+
+        SetTurn(IsYouFirst);
     }
 
     public void SetTurn(bool isMyTurn)
     {
         IsMyTurn = isMyTurn;
 
-        if (!isMyTurn)
+        UpdateSelection();
+    }
+
+    public void UpdateSelection()
+    {
+        //select any
+        if (!StockItems.Any(n => n.IsSelected))
+        {
+            OnItemClicked(StockItems[0]);
+        }
+
+        if (!IsMyTurn)
         {
             EquipButtonVisible(false);
         }
         else
         {
-            foreach (var view in StockItems)
-            {
-                if (!view.IsEquipped && !view.IsSelected)
-                {
-                    OnItemClicked(view);
-                    break;
-                }
-            }
+            var selectedItem = StockItems.First(n => n.IsSelected);
+
+            EquipButtonVisible(!selectedItem.IsEquipped);
         }
     }
 
@@ -91,7 +105,7 @@ public class GetItem : MonoBehaviour
     {
         _equipStepText.text = "Now step is " + step;
 
-        Logger.Log("Update sctock:" + items.Count() + " items");
+       // Logger.Log("Update sctock:" + items.Count() + " items");
 
         //clear all
         ClearStock();
@@ -113,6 +127,12 @@ public class GetItem : MonoBehaviour
             newView.transform.localScale = Vector3.one;
 
             StockItems.Add(script);
+        }
+
+        foreach (var view in StockItems)
+        {
+            view.IsEquipped = false;
+            view.IsSelected = false;
         }
     }
 
@@ -151,7 +171,7 @@ public class GetItem : MonoBehaviour
 
     private void OnItemClicked(StockItemView view)
     {
-        Logger.Log("OnItemClicked:" + view.ItemData.Id);
+        //Logger.Log("OnItemClicked:" + view.ItemData.Id);
 
         foreach (var child in StockItems)
         {
@@ -163,7 +183,7 @@ public class GetItem : MonoBehaviour
 
     private void EquipButtonVisible(bool visible)
     {
-        Logger.Log("equipbuttonVisible:" + visible);
+        //Logger.Log("equipbuttonVisible:" + visible);
 
         _equipItemBtn.SetActive(visible);
     }
