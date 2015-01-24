@@ -124,6 +124,7 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
         if (Status == NetStatus.Disconnected)
         {
             PlayerData = EnemyData = null;
+            PhotonNetwork.Disconnect();
         }
 
         OnStatusChanged(Status);
