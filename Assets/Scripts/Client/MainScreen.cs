@@ -2,10 +2,11 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
-public class MainScreen : MonoBehaviour {
-
-	void Start () 
+public class MainScreen : MonoBehaviour 
+{
+	void Awake()
 	{
 		_names = new List<string> (new string[]{"Heird",
 			"Astaydda",
@@ -71,11 +72,19 @@ public class MainScreen : MonoBehaviour {
 			"Abeseth",
 			"Adreranna"});
 	}
-	
-	// Update is called once per frame
-	void Update () 
+
+	void OnEnable()
 	{
-		
+		if(!_isChangeName)
+		{
+			_inputField.text = _names[Random.Range(0, _names.Count)];
+		}
+	}
+
+	public void OnSelectField()
+	{
+		Logger.Log ("Select Field");
+		_isChangeName = true;
 	}
 
 	public string NameOfPlayer 
@@ -86,10 +95,11 @@ public class MainScreen : MonoBehaviour {
 		}
 	}
 
+	private bool _isChangeName;
 	private List<string> _names;
 
 	[SerializeField]
 	private Text _textInField;
 	[SerializeField]
-	private Text _inputField;
+	private InputField _inputField;
 }
