@@ -31,6 +31,9 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
     public event Action<int, int> OnItemEquipped = delegate { };
     public event Action OnGameStarted = delegate { };
     public event Action<int> OnGameFinished = delegate { };
+    public event Action<int, int> OnDmgReceived = delegate { };
+    public event Action<int, int> OnEnemyDmgReceived = delegate { };
+    public event Action<int, int> OnAbilityUsed = delegate { };
 
     public PlayerData PlayerData { get; private set; }
     public PlayerData EnemyData { get; private set; }
@@ -105,12 +108,12 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
 
     public void SendAttack(int weaponId, int dmg)
     {
-        throw new NotImplementedException();
+        NetPlayer.My.SendAttack(weaponId, dmg);
     }
 
     public void UseAbility(int abilityId)
     {
-        throw new NotImplementedException();
+        NetPlayer.My.SendUseAbility(abilityId);
     }
 
     #endregion
@@ -284,5 +287,20 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
     public void RaiseGameFinished(int winnerId)
     {
         OnGameFinished(winnerId);
+    }
+
+    public void RaiseEnemyDmgReceived(int weaponId, int dmg)
+    {
+        OnEnemyDmgReceived(weaponId, dmg);
+    }
+
+    public void RaiseDmgReceived(int weaponId, int dmg)
+    {
+        OnDmgReceived(weaponId, dmg);
+    }
+
+    public void RaiseAbilityUsed(int whoId, int abilityId)
+    {
+        OnAbilityUsed(whoId, abilityId);
     }
 }

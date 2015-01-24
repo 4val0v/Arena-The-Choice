@@ -4,6 +4,7 @@ public class CharacterData
 {
     public CharacterClass Class { get; set; }
 
+    public float BaseHp { get; set; }
     public float BaseDmg { get; set; }
     public float BaseDef { get; set; }
     public float BaseAttackSpeed { get; set; }
@@ -21,6 +22,7 @@ public static class CharacterDataProviders
         _characters.Add(CharacterClass.Man, new CharacterData
         {
             Class = CharacterClass.Man,
+            BaseHp = 100,
             BaseDmg = 20,
             BaseAttackSpeed = 10,
             BaseDef = 10,
@@ -30,6 +32,7 @@ public static class CharacterDataProviders
         _characters.Add(CharacterClass.Woman, new CharacterData
         {
             Class = CharacterClass.Woman,
+            BaseHp = 100,
             BaseDmg = 10,
             BaseAttackSpeed = 20,
             BaseDef = 10,
@@ -39,6 +42,7 @@ public static class CharacterDataProviders
         _characters.Add(CharacterClass.Orc, new CharacterData
         {
             Class = CharacterClass.Orc,
+            BaseHp = 100,
             BaseDmg = 15,
             BaseAttackSpeed = 10,
             BaseDef = 15,

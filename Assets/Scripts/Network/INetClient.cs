@@ -49,7 +49,7 @@ public enum GameMode
 
 public enum CharacterClass
 {
-   	None = -1,
+    None = -1,
     Man,
     Woman,
     Orc,
@@ -126,6 +126,11 @@ public interface INetClient
     /// </summary>
     event Action<int> OnGameFinished;
 
+    event Action<int, int> OnDmgReceived;
+    event Action<int, int> OnEnemyDmgReceived;
+
+    event Action<int, int> OnAbilityUsed;
+    
     PlayerData PlayerData { get; }
 
     PlayerData EnemyData { get; }
@@ -139,7 +144,7 @@ public interface INetClient
     /// Current game mode
     /// </summary>
     GameMode GameMode { get; }
-    
+
     void Connect();
 
     void Disconnect();
@@ -147,7 +152,7 @@ public interface INetClient
     void CreateOrJoinToBattle(GameMode gameMode);
 
     void UpdateName(string name);
-    
+
     void SetClass(CharacterClass classId);
 
     void EquipItem(int itemId);

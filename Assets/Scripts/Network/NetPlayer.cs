@@ -154,6 +154,15 @@ public class NetPlayer : Photon.PunBehaviour
         photonView.RPC("GameStartReceived", PhotonTargets.AllViaServer);
     }
 
+    public void SendAttack(int weaponId, int dmg)
+    {
+        photonView.RPC("AttackReceived", PhotonTargets.All, weaponId, dmg);
+    }
+
+    public void SendUseAbility(int abilityId)
+    {
+        photonView.RPC("AbilityUsedReceived", PhotonTargets.All, abilityId);
+    }
     #region handlers
 
     [RPC]
@@ -233,6 +242,32 @@ public class NetPlayer : Photon.PunBehaviour
     public void GameStartReceived()
     {
         Client.RaiseGameStarted();
+    }
+
+    [RPC]
+    public void AttackReceived(int weaponId, int dmg)
+    {
+        if (photonView.isMine)
+        {
+            Client.RaiseEnemyDmgReceived(weaponId, dmg);
+        }
+        else
+        {
+            Client.RaiseDmgReceived(weaponId, dmg);
+        }
+    }
+
+    [RPC]
+    public void AbilityUsedReceived(int abilityId)
+    {
+        if (photonView.isMine)
+        {
+            Client.RaiseAbilityUsed(My.Id, abilityId);
+        }
+        else
+        {
+            Client.RaiseDmgReceived(Enemy.Id, abilityId);
+        }
     }
     #endregion
 }
