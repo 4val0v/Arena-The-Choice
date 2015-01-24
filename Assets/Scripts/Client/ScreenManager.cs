@@ -25,7 +25,8 @@ public class ScreenManager : MonoBehaviour
             case Screens.GetItem:
                 _topBar.Show();
                 _currentScreen = _getItem;
-			case Screens.GetItem:
+				break;
+			case Screens.Arena:
 				_topBar.Show();
 				_currentScreen = _arena;
                 break;
