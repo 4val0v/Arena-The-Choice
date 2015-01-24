@@ -81,7 +81,7 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
         CoroutineExecuter.Execute(() =>
         {
             PlayerData.Name = name;
-            OnNameUpdated(PlayerData.Name);
+            PhotonNetwork.player.SetName(name);
         });
     }
 
@@ -90,7 +90,7 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
         CoroutineExecuter.Execute(() =>
         {
             PlayerData.Class = classId;
-            OnClassUpdated(PlayerData.Class);
+            PhotonNetwork.player.SetClass(classId);
         });
     }
 
@@ -189,9 +189,6 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
         Logger.Log("OnJoinedRoom");
 
         PhotonNetwork.Instantiate("NetPlayer", Vector3.zero, Quaternion.identity, 0);
-
-        PhotonNetwork.player.SetName(PlayerData.Name);
-        PhotonNetwork.player.SetClass(PlayerData.Class);
     }
 
     #endregion

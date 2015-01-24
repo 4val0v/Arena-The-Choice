@@ -79,6 +79,9 @@ public class GameManager : MonoBehaviour
                 break;
             case NetStatus.ConnectedToBattle:
                 _screenManager.ChangeScreen(ScreenManager.Screens.CharacterChange);
+
+                _playerName = "Pl" + UnityEngine.Random.Range(0, short.MaxValue);
+                _client.UpdateName(_playerName);
                 break;
             default:
                 break;
@@ -87,9 +90,6 @@ public class GameManager : MonoBehaviour
 
     public void ConnectToBattle(bool isBot)
     {
-        _playerName = "Pl" + UnityEngine.Random.Range(0, short.MaxValue);
-        _client.UpdateName(_playerName);
-
         _client.CreateOrJoinToBattle(isBot ? GameMode.PvE : GameMode.PvP);
     }
 
