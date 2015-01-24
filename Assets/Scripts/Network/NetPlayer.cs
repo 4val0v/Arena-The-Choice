@@ -56,6 +56,22 @@ public class NetPlayer : Photon.PunBehaviour
 
     private readonly static List<NetPlayer> _players = new List<NetPlayer>();
 
+    public static NetPlayer My
+    {
+        get
+        {
+            foreach (var netPlayer in _players)
+            {
+                if (netPlayer.photonView.isMine)
+                {
+                    return netPlayer;
+                }
+            }
+
+            return null;
+        }
+    }
+
     void Awake()
     {
         if (photonView.owner.isMasterClient)
@@ -106,13 +122,13 @@ public class NetPlayer : Photon.PunBehaviour
         switch (step)
         {
             case EquipStep.FirstHand:
-                items = new[] {1, 2, 3, 4};
+                items = new[] { 1, 2, 3, 4 };
                 break;
             case EquipStep.SecondHand:
-                items = new[] {5, 6, 7, 8};
+                items = new[] { 5, 6, 7, 8 };
                 break;
             case EquipStep.Armor:
-                items = new int[] {9, 10, 11, 12};
+                items = new int[] { 9, 10, 11, 12 };
                 break;
             default:
                 throw new ArgumentOutOfRangeException("step");
@@ -120,6 +136,18 @@ public class NetPlayer : Photon.PunBehaviour
 
         photonView.RPC("StepItemsReceived", PhotonTargets.All, (int)step, items);
     }
+
+    public void SendEquipItem(int itemId)
+    {
+        photonView.RPC("ItemEquippedReceived", PhotonTargets.All, itemId);
+    }
+
+    private void SendGameStart()
+    {
+        photonView.RPC("GameStartReceived", PhotonTargets.AllViaServer);
+    }
+
+    #region handlers
 
     [RPC]
     public void BattleStartReceived(int playerId, int otherId)
@@ -134,6 +162,9 @@ public class NetPlayer : Photon.PunBehaviour
             Client.EnemyData.Id = playerId;
             Client.PlayerData.Id = otherId;
         }
+
+        Client.PlayerData.EquippedItems.Clear();
+        Client.EnemyData.EquippedItems.Clear();
 
         Client.RaiseBattleStarted();
 
@@ -155,4 +186,46 @@ public class NetPlayer : Photon.PunBehaviour
     {
         Client.RaiseStepItems((EquipStep)step, items);
     }
+
+    [RPC]
+    public void ItemEquippedReceived(int itemId)
+    {
+        if (photonView.isMine)
+        {
+            Client.PlayerData.EquippedItems.Add(itemId);
+            Client.RaiseItemEquipped(Client.PlayerData.Id, itemId);
+        }
+        else
+        {
+            Client.EnemyData.EquippedItems.Add(itemId);
+            Client.RaiseItemEquipped(Client.EnemyData.Id, itemId);
+        }
+
+        if (PhotonNetwork.isMasterClient)
+        {
+            if (Client.Status == NetStatus.ConnectedToBattle)
+            {
+                if (Client.PlayerData.EquippedItems.Count == 1 && Client.EnemyData.EquippedItems.Count == 1)
+                {
+                    SetStepItems(EquipStep.SecondHand);
+                }
+                else if (Client.PlayerData.EquippedItems.Count == 2 && Client.EnemyData.EquippedItems.Count == 2)
+                {
+                    SetStepItems(EquipStep.Armor);
+                }
+                else if (Client.PlayerData.EquippedItems.Count == Client.EnemyData.EquippedItems.Count &&
+                   Client.PlayerData.EquippedItems.Count == 3)
+                {
+                    My.SendGameStart();
+                }
+            }
+        }
+    }
+
+    [RPC]
+    public void GameStartReceived()
+    {
+        Client.RaiseGameStarted();
+    }
+    #endregion
 }

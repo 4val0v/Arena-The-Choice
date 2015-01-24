@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,14 @@ public class GetItem : MonoBehaviour
     [SerializeField]
     private Text _equipStepText;
 
-    private readonly List<StockItemView> _stockItems = new List<StockItemView>();
+    [SerializeField]
+    private GameObject _equipItemBtn;
+
+    public readonly List<StockItemView> StockItems = new List<StockItemView>();
+
+    public event Action<int> ItemEquipClicked = delegate { };
+
+    public bool IsMyTurn { get; private set; }
 
     void Start()
     {
@@ -56,6 +64,27 @@ public class GetItem : MonoBehaviour
         _stockGrid.transform.parent.gameObject.SetActive(true);
     }
 
+    public void SetTurn(bool isMyTurn)
+    {
+        IsMyTurn = isMyTurn;
+
+        if (!isMyTurn)
+        {
+            EquipButtonVisible(false);
+        }
+        else
+        {
+            foreach (var view in StockItems)
+            {
+                if (!view.IsEquipped && !view.IsSelected)
+                {
+                    OnItemClicked(view);
+                    break;
+                }
+            }
+        }
+    }
+
     public void UpdateStock(EquipStep step, IEnumerable<int> items)
     {
         _equipStepText.text = "Now step is " + step;
@@ -75,26 +104,65 @@ public class GetItem : MonoBehaviour
             newView.transform.SetParent(_stockGrid.transform);
 
             var script = newView.GetComponent<StockItemView>();
+
             script.SetData(itemData);
+            script.ItemClicked += OnItemClicked;
 
             newView.transform.localScale = Vector3.one;
 
-            _stockItems.Add(script);
+            StockItems.Add(script);
         }
+    }
+
+    public void UpdateEquippedItems(IEnumerable<int> myItems, IEnumerable<int> enemyItems)
+    {
+        foreach (var child in StockItems)
+        {
+            child.IsEquipped = myItems.Any(n => n == child.ItemData.Id) || enemyItems.Any(n => n == child.ItemData.Id);
+        }
+
+        //refresh my inventory
+
+        //refresh enemy inventory
     }
 
     private void ClearStock()
     {
-        foreach (var child in _stockItems)
+        foreach (var child in StockItems)
         {
+            child.ItemClicked -= OnItemClicked;
             DestroyObject(child.gameObject);
         }
 
-        _stockItems.Clear();
+        StockItems.Clear();
+    }
+    
+    public void EquipItem()
+    {
+        var selectedItem = StockItems.FirstOrDefault(n => n.IsSelected && !n.IsEquipped);
+
+        if (selectedItem == null)
+            return;
+
+        ItemEquipClicked(selectedItem.ItemData.Id);
     }
 
-    public void SelectItem(int id)
+    private void OnItemClicked(StockItemView view)
     {
+        Logger.Log("OnItemClicked:" + view.ItemData.Id);
 
+        foreach (var child in StockItems)
+        {
+            child.IsSelected = view == child;
+        }
+
+        EquipButtonVisible(view.IsSelected && !view.IsEquipped && IsMyTurn);
+    }
+
+    private void EquipButtonVisible(bool visible)
+    {
+        Logger.Log("equipbuttonVisible:" + visible);
+
+        _equipItemBtn.SetActive(visible);
     }
 }

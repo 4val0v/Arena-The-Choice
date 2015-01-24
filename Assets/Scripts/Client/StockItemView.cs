@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class StockItemView : MonoBehaviour
@@ -7,7 +8,7 @@ public class StockItemView : MonoBehaviour
     public Image SelectionImage;
     public Image EquippedImage;
 
-    private ItemData ItemData { get; set; }
+    public ItemData ItemData { get; private set; }
 
     private bool _isSelected;
 
@@ -35,10 +36,17 @@ public class StockItemView : MonoBehaviour
         }
     }
 
+    public event Action<StockItemView> ItemClicked = delegate { };
+
     public void SetData(ItemData data)
     {
         ItemData = data;
 
         IconImage.sprite = ItemData.Icon;
+    }
+
+    public void OnItemClick()
+    {
+        ItemClicked(this);
     }
 }

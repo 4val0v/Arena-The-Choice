@@ -7,6 +7,7 @@ public class ScreenManager : MonoBehaviour
     public void ChangeScreen(Screens screen)
     {
         _topBar.Hide();
+
         if (_currentScreen != null)
         {
             _currentScreen.SetActive(false);

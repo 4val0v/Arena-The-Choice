@@ -31,4 +31,6 @@ MonoBehaviour:
   - FirstPlayerReceived
   - BattleStartReceived
   - StepItemsReceived
+  - GameStartReceived
+  - ItemEquippedReceived
   DisableAutoOpenWizard: 0

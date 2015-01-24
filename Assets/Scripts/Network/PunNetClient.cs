@@ -100,7 +100,7 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
 
     public void EquipItem(int itemId)
     {
-        throw new NotImplementedException();
+        NetPlayer.My.SendEquipItem(itemId);
     }
 
     public void SendAttack(int weaponId, int dmg)
@@ -121,6 +121,11 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
     {
         Status = newStatus;
 
+        if (Status == NetStatus.Disconnected)
+        {
+            PlayerData = EnemyData = null;
+        }
+
         OnStatusChanged(Status);
     }
 
@@ -134,15 +139,15 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
         if (gameMode == GameMode.PvE)
         {
             PlayerData.Id = 1;
-            PlayerData.EquippedItems = new List<int>();
+            PlayerData.EquippedItems.Clear();
 
             EnemyData = new PlayerData
             {
                 Id = -1,
                 Class = CharacterClass.Man,
-                EquippedItems = new List<int>(),
                 Name = "Bot",
             };
+            EnemyData.EquippedItems.Clear();
 
             GameMode = gameMode;
 
@@ -240,6 +245,14 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
             }
         }
     }
+
+    public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
+    {
+        base.OnPhotonPlayerDisconnected(otherPlayer);
+
+        Disconnect();
+    }
+
     #endregion
 
     public void RaiseBattleStarted()
@@ -255,5 +268,20 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
     public void RaiseStepItems(EquipStep step, IEnumerable<int> items)
     {
         OnStepItemsReceived(step, items);
+    }
+
+    public void RaiseItemEquipped(int playerId, int itemId)
+    {
+        OnItemEquipped(playerId, itemId);
+    }
+
+    public void RaiseGameStarted()
+    {
+        OnGameStarted();
+    }
+
+    public void RaiseGameFinished(int winnerId)
+    {
+        OnGameFinished(winnerId);
     }
 }

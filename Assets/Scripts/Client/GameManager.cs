@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
         _client.OnNameUpdated += HandleOnNameUpdated;
 
         _screenManager.CharacterChangeScreen.GetComponent<SelectCharacter>().OnCharacterSelected += SelectClass;
+        _screenManager.GetItem.ItemEquipClicked += GetItemOnItemEquipClicked;
     }
 
     void Start()
@@ -34,13 +36,18 @@ public class GameManager : MonoBehaviour
 
     void HandleOnGameStarted()
     {
-		_screenManager.ChangeScreen (ScreenManager.Screens.Arena);
+        Logger.Log("Game started!");
+
+        _screenManager.ChangeScreen(ScreenManager.Screens.Arena);
     }
 
     void HandleOnItemEquipped(int playerId, int itemId)
     {
         //get item
         Logger.Log("ItemEquipped: playerId:" + playerId + ", itemId:" + itemId);
+
+        //refresh
+        _screenManager.GetItem.UpdateEquippedItems(_client.PlayerData.EquippedItems, _client.EnemyData.EquippedItems);
     }
 
     void HandleOnStepItemsReceived(EquipStep step, System.Collections.Generic.IEnumerable<int> items)
@@ -48,12 +55,16 @@ public class GameManager : MonoBehaviour
         //create screen change item
         Logger.Log("Current step:" + step + ", items...");
 
-		_screenManager.GetItem.UpdateStock(step, items);
+        _screenManager.GetItem.UpdateStock(step, items);
     }
 
     void HandleOnFirstPlayerReceived(int playerId)
     {
+        Logger.Log("I'm first:" + (_client.PlayerData.Id == playerId));
+
         _screenManager.GetItem.IsYouFirst = _client.PlayerData.Id == playerId;
+
+        _screenManager.GetItem.SetTurn(_screenManager.GetItem.IsYouFirst);
     }
 
     void HandleOnEnemyClassUpdated(CharacterClass classId)
@@ -78,6 +89,22 @@ public class GameManager : MonoBehaviour
         _screenManager.TopBar.UpdateEnemyName(name);
     }
 
+    private void GetItemOnItemEquipClicked(int i)
+    {
+        _client.EquipItem(i);
+
+        if (_client.PlayerData.EquippedItems.Count == _client.EnemyData.EquippedItems.Count &&
+            _client.PlayerData.EquippedItems.Count == 3)
+        {
+            //START GAME!!!
+            _screenManager.GetItem.SetTurn(false);
+        }
+        else
+        {
+            _screenManager.GetItem.SetTurn(!_screenManager.GetItem.IsMyTurn);
+        }
+    }
+
     private void CheckLastSelectionOfCharacter()
     {
         if (_client.PlayerData.Class != CharacterClass.None && _client.EnemyData.Class != CharacterClass.None)
@@ -96,6 +123,8 @@ public class GameManager : MonoBehaviour
                 break;
             case NetStatus.Disconnected:
                 _screenManager.ChangeScreen(ScreenManager.Screens.Main);
+
+                CoroutineExecuter.Execute(_client.Connect);
                 break;
             case NetStatus.ConnectingToBattle:
                 _screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
