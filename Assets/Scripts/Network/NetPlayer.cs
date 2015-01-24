@@ -289,7 +289,7 @@ public class NetPlayer : Photon.PunBehaviour
         }
         else
         {
-            Client.RaiseDmgReceived(Enemy.Id, abilityId);
+            Client.RaiseAbilityUsed(Enemy.Id, abilityId);
         }
     }
     #endregion
