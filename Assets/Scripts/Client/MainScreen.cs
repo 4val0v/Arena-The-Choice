@@ -91,5 +91,5 @@ public class MainScreen : MonoBehaviour {
 	[SerializeField]
 	private Text _textInField;
 	[SerializeField]
-	private Text _textInField;
+	private Text _inputField;
 }
