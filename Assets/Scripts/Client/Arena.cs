@@ -143,6 +143,7 @@ public class Arena : MonoBehaviour
 
 	public void MakeDmgToPlayer(int dmg)
 	{
+		dmg = - dmg;
 		var score = _scoresPrefab.Spawn (gameObject.transform, playerScores).GetComponent<DamageNums>();
 		string scrText = "";
 		if (dmg == 0)
@@ -166,6 +167,7 @@ public class Arena : MonoBehaviour
 
 	public void MakeDmgToEnemy(int dmg)
 	{
+		dmg = - dmg;
 		var score = _scoresPrefab.Spawn (gameObject.transform, enemyScores).GetComponent<DamageNums>();
 		string scrText = "";
 		if (dmg == 0)
