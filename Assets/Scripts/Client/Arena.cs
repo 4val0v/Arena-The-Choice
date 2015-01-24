@@ -12,12 +12,31 @@ public class Arena : MonoBehaviour {
 	
 	void Update ()
 	{
-		if (_time >= 0)
+		FightCounter ();
+		ScreenTimeCounter ();
+	}
+
+	private void FightCounter()
+	{
+		if (!_fightStarted)
 		{
-			_time += Time.deltaTime;
-			if(_time >= 1)
+			return;
+		}
+		timerOfFight += Time.deltaTime;
+		if(timerOfFight >= _timeBeforeNextKick)
+		{
+
+		}
+	}
+
+	private void ScreenTimeCounter()
+	{
+		if (_timerOnScreen >= 0)
+		{
+			_timerOnScreen += Time.deltaTime;
+			if(_timerOnScreen >= 1)
 			{
-				_time = 0;
+				_timerOnScreen = 0;
 				time--;
 				if (time == 0)
 				{
@@ -30,7 +49,7 @@ public class Arena : MonoBehaviour {
 
 	void OnEnable()
 	{
-		_time = 0;
+		_timerOnScreen = 0;
 		_timerText.text = ""+time;
 		_timerText.gameObject.SetActive (true);
 		ActivateAllBtns (false);
@@ -38,17 +57,18 @@ public class Arena : MonoBehaviour {
 
 	void OnDisable()
 	{
-		_time = -1;
+		_timerOnScreen = -1;
 		time = 3;
 		_timerText.gameObject.SetActive (false);
 	}
 
 	private void TimerFinish()
 	{
-		_time = -1;
+		_timerOnScreen = -1;
 		time = 3;
 		_timerText.gameObject.SetActive (false);
 		ActivateAllBtns (true);
+		StartFight ();
 	}
 
 	private void ActivateAllBtns(bool active)
@@ -59,9 +79,34 @@ public class Arena : MonoBehaviour {
 		}
 	}
 
+	void StartFight ()
+	{
+		TimeBeforeNextKick ();
+		_fightStarted = true;
+	}
+
+	void TimeBeforeNextKick()
+	{
+		_timeBeforeNextKick = _client.PlayerData
+	}
+
+	public INetClient Client
+	{
+		set
+		{
+			_client = value;
+		}
+	}
+
+	private bool _fightStarted;
+	private float timerOfFight;
+	private float _timeBeforeNextKick;
+
+	private INetClient _client;
 
 	private int time = 3;
-	private float _time = -1; 
+	private float _timerOnScreen = -1; 
+
 	[SerializeField]
 	private Text _timerText;
 

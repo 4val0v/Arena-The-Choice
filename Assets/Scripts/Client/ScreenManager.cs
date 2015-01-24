@@ -83,6 +83,17 @@ public class ScreenManager : MonoBehaviour
         }
     }
 
+	public Arena Arena {
+		get 
+		{
+			if (_arenaComp == null)
+			{
+				_arenaComp = _arena.GetComponent<Arena>();
+			}
+			return _arenaComp;
+		}
+	}
+
     public GetItem GetItem
     {
         get
@@ -111,6 +122,7 @@ public class ScreenManager : MonoBehaviour
 	private GetItem _getItemComp;
 	private Connecting _connectingComp;
 	private SelectCharacter _selectCharacterComp;
+	private Arena 		_arenaComp;
 
     [SerializeField]
     private GameObject _mainScreen;

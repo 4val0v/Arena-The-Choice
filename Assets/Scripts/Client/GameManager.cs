@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     void HandleOnGameStarted()
     {
         Logger.Log("Game started!");
-
+		_screenManager.Arena.Client = _client;
         _screenManager.ChangeScreen(ScreenManager.Screens.Arena);
     }
 
