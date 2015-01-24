@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
 
     public void SelectClass(int num)
     {
-        _screenManager.SetCustomText(Texsts.PLAYER_WAIT);
+        _screenManager.SetCustomText(Texts.PLAYER_WAIT);
         _screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
         _client.SetClass((CharacterClass)num);
     }

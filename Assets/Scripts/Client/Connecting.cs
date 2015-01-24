@@ -15,7 +15,7 @@ public class Connecting : MonoBehaviour {
 		_time = 0;
 		if (!_tempChange)
 		{
-			_mainWord = "Connecting";
+			_mainWord = Texts.CONNECTING;
 		}
 		_tempChange = true;
 	}
