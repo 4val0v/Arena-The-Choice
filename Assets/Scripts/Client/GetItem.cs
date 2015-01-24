@@ -1,44 +1,83 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
-public class GetItem : MonoBehaviour {
+public class GetItem : MonoBehaviour
+{
+    [SerializeField]
+    private WhoIsTheFirstIndicator _whoIsTheFirst;
 
-	void Start () 
-	{
-		_whoIsTheFirst.OnEndAnimChoise += EndFirstPlayerAnim;
-	}
-	
-	void Update () 
-	{
-	
-	}
+    [SerializeField]
+    private GameObject _stockItemPref;
 
-	public bool IsYouFirst 
-	{
-		get;
-		set;
-	}
+    [SerializeField]
+    private GameObject _stockGrid;
 
-	void OnEnable()
-	{
-		if (IsYouFirst)
-		{
-			_whoIsTheFirst.Play("you");
-		}
-		else
-		{
-			_whoIsTheFirst.Play("enemy");
-		}
-	}
+    [SerializeField]
+    private Text _itemDescriptionText;
 
-	private void EndFirstPlayerAnim()
-	{
-		Logger.Log ("End First playerAnim");
-		_whoIsTheFirst.gameObject.SetActive (false);
-	}
+    private readonly List<StockItemView> _stockItems = new List<StockItemView>();
 
+    void Start()
+    {
+        _whoIsTheFirst.OnEndAnimChoise += EndFirstPlayerAnim;
+    }
 
-	[SerializeField]
-	private WhoIsTheFirstIndicator _whoIsTheFirst;
+    public bool IsYouFirst
+    {
+        get;
+        set;
+    }
 
+    void OnEnable()
+    {
+        if (IsYouFirst)
+        {
+            _whoIsTheFirst.Play("you");
+        }
+        else
+        {
+            _whoIsTheFirst.Play("enemy");
+        }
+    }
+
+    private void EndFirstPlayerAnim()
+    {
+        Logger.Log("End First playerAnim");
+        _whoIsTheFirst.gameObject.SetActive(false);
+    }
+
+    public void UpdateStock(IEnumerable<int> items)
+    {
+        //clear all
+        ClearStock();
+
+        //create item
+        foreach (var itemId in items)
+        {
+            var itemData = ItemsProvider.GetItem(itemId);
+
+            var newView = Instantiate(_stockItemPref) as GameObject;
+
+            ((RectTransform)newView.transform).SetParent(_stockGrid.transform);
+
+            _stockItems.Add(newView.GetComponent<StockItemView>());
+        }
+    }
+
+    private void ClearStock()
+    {
+        foreach (var child in _stockItems)
+        {
+            DestroyObject(child.gameObject);
+        }
+
+        _stockItems.Clear();
+    }
+
+    public void SelectItem(int id)
+    {
+
+    }
 }

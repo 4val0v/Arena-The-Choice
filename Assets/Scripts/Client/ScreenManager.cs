@@ -2,118 +2,117 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class ScreenManager : MonoBehaviour 
+public class ScreenManager : MonoBehaviour
 {
+    public void ChangeScreen(Screens screen)
+    {
+        _topBar.Hide();
+        if (_currentScreen != null)
+        {
+            _currentScreen.SetActive(false);
+        }
+        switch (screen)
+        {
+            case Screens.CharacterChange:
+                _currentScreen = _characterChangeScreen;
+                break;
+            case Screens.Main:
+                _currentScreen = _mainScreen;
+                break;
+            case Screens.Connecting:
+                _currentScreen = _connecting;
+                break;
+            case Screens.GetItem:
+                _topBar.Show();
+                _currentScreen = _getItem;
+                break;
+        }
+        _currentScreen.SetActive(true);
+    }
 
-	void Start () 
-	{
-	}
-	
-	void Update () 
-	{
-		
-	}
+    private void HideAll()
+    {
+        foreach (var screen in AllScreens())
+        {
+            screen.SetActive(false);
+        }
+    }
 
-	public void ChangeScreen(Screens screen)
-	{
-		_topBar.Hide();
-		if (_currentScreen != null)
-		{
-			_currentScreen.SetActive(false);
-		}
-		switch (screen) 
-		{
-			case Screens.CharacterChange:
-				_currentScreen = _characterChangeScreen;
-				break;
-			case Screens.Main:
-				_currentScreen = _mainScreen;
-				break;
-			case Screens.Connecting:
-				_currentScreen = _connecting;
-				break;
-			case Screens.GetItem:
-				_topBar.Show();
-				_currentScreen = _getItem;
-				break;
-		}
-		_currentScreen.SetActive(true);
-	}
+    private IEnumerable<GameObject> AllScreens()
+    {
+        yield return _mainScreen;
+        yield return _characterChangeScreen;
+        yield return _connecting;
+        yield return _getItem;
+    }
 
-	private void HideAll()
-	{
-		foreach (var screen in AllScreens ()) 
-		{
-			screen.SetActive(false);
-		}
-	}
+    public GameObject CharacterChangeScreen
+    {
+        get
+        {
+            return _characterChangeScreen;
+        }
+    }
 
-	private IEnumerable<GameObject> AllScreens()
-	{
-		yield return _mainScreen;
-		yield return _characterChangeScreen;
-		yield return _connecting;
-		yield return _getItem;
-	}
+    public GameObject ConnectingScreen
+    {
+        get
+        {
+            return _connecting;
+        }
+    }
 
-	public GameObject CharacterChangeScreen 
-	{
-		get {
-			return _characterChangeScreen;
-		}
-	}
+    public GameObject MainScreen
+    {
+        get
+        {
+            return _mainScreen;
+        }
+    }
 
-	public GameObject ConnectingScreen {
-		get {
-			return _connecting;
-		}
-	}
+    public GameObject GetItem
+    {
+        get
+        {
+            return _getItem;
+        }
+    }
 
-	public GameObject MainScreen {
-		get {
-			return _mainScreen;
-		}
-	}
+    public TopBar TopBar
+    {
+        get
+        {
+            return _topBar;
+        }
+    }
 
-	public GameObject GetItem {
-		get {
-			return _getItem;
-		}
-	}
+    public void SetCustomText(string text)
+    {
+        ConnectingScreen.GetComponent<Connecting>().ChangeMainWord(text);
+    }
 
-	public TopBar TopBar {
-		get {
-			return _topBar;
-		}
-	}
+    [SerializeField]
+    private GameObject _mainScreen;
 
-	public void SetCustomText(string text)
-	{
-		ConnectingScreen.GetComponent<Connecting> ().ChangeMainWord (text);
-	}
+    [SerializeField]
+    private GameObject _characterChangeScreen;
 
-	[SerializeField]
-	private GameObject _mainScreen;
+    [SerializeField]
+    private GameObject _connecting;
 
-	[SerializeField]
-	private GameObject _characterChangeScreen;
+    [SerializeField]
+    private GameObject _getItem;
 
-	[SerializeField]
-	private GameObject _connecting;
+    [SerializeField]
+    private TopBar _topBar;
 
-	[SerializeField]
-	private GameObject _getItem;
+    private GameObject _currentScreen;
 
-	[SerializeField]
-	private TopBar _topBar;
-
-	private GameObject _currentScreen;
-
-	public enum Screens
-	{
-		Main,
-		CharacterChange,
-		Connecting,
-		GetItem
-	}
+    public enum Screens
+    {
+        Main,
+        CharacterChange,
+        Connecting,
+        GetItem
+    }
 }
