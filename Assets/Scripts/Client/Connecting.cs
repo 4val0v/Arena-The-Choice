@@ -47,6 +47,7 @@ public class Connecting : MonoBehaviour {
 		_mainWord = word;
 		_tempChange = true;
 		_textField.text = _mainWord;
+		_added = ".";
 	}
 
 	private float _time;
