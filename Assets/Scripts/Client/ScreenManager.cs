@@ -31,6 +31,9 @@ public class ScreenManager : MonoBehaviour
 			case Screens.Connecting:
 				_currentScreen = _connecting;
 				break;
+			case Screens.GetItem:
+				_currentScreen = _getItem;
+				break;
 		}
 		_currentScreen.SetActive(true);
 	}
@@ -47,6 +50,8 @@ public class ScreenManager : MonoBehaviour
 	{
 		yield return _mainScreen;
 		yield return _characterChangeScreen;
+		yield return _connecting;
+		yield return _getItem;
 	}
 
 	public GameObject CharacterChangeScreen 
@@ -62,6 +67,11 @@ public class ScreenManager : MonoBehaviour
 		}
 	}
 
+	public void SetCustomText(string text)
+	{
+		ConnectingScreen.GetComponent<Connecting> ().ChangeMainWord (text);
+	}
+
 	[SerializeField]
 	private GameObject _mainScreen;
 
@@ -71,12 +81,16 @@ public class ScreenManager : MonoBehaviour
 	[SerializeField]
 	private GameObject _connecting;
 
+	[SerializeField]
+	private GameObject _getItem;
+
 	private GameObject _currentScreen;
 
 	public enum Screens
 	{
 		Main,
 		CharacterChange,
-		Connecting
+		Connecting,
+		GetItem
 	}
 }

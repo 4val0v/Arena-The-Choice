@@ -56,13 +56,14 @@ public class GameManager : MonoBehaviour
 
     void HandleOnEnemyClassUpdated(CharacterClass classId)
     {
+		CheckLastSelectionOfCharacter ();
         //change enemy character 
         Logger.Log("enemy classId:" + classId);
     }
 	
 	void HandleOnClassUpdated (CharacterClass obj)
 	{
-		
+		CheckLastSelectionOfCharacter ();
 	}
 
     void HandleOnEnemyNameUpdated(string name)
@@ -70,6 +71,14 @@ public class GameManager : MonoBehaviour
         //update enemy name;
         Logger.Log("enemy name:" + name);
     }
+
+	private void CheckLastSelectionOfCharacter()
+	{
+		if (_client.PlayerData.Class != CharacterClass.None && _client.EnemyData.Class != CharacterClass.None)
+		{
+			_screenManager.ChangeScreen(ScreenManager.Screens.GetItem);
+		}
+	}
 
     void HandleOnStatusChanged(NetStatus status)
     {
@@ -103,7 +112,7 @@ public class GameManager : MonoBehaviour
 
 	public void SelectClass(int num)
 	{
-		_screenManager.ConnectingScreen.GetComponent<Connecting> ().ChangeMainWord (Texsts.PLAYER_WAIT);
+		_screenManager.SetCustomText (Texsts.PLAYER_WAIT);
 		_screenManager.ChangeScreen(ScreenManager.Screens.Connecting);
 		_client.SetClass((CharacterClass) num);
 	}
