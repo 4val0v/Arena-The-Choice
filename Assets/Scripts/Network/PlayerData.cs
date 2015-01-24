@@ -10,6 +10,8 @@ public class PlayerData
     public CharacterClass Class { get; set; }
     public readonly List<int> EquippedItems = new List<int>();
 
+    public readonly List<BaseAbility> Abilities = new List<BaseAbility>();
+ 
     public CharacterData BaseData { get { return CharacterDataProviders.GetBaseData(Class); } }
 
     private float _hp;
@@ -36,9 +38,15 @@ public class PlayerData
         get
         {
             var par = BaseData.BaseDef;
+
             foreach (var item in EquippedItems)
             {
                 par += ItemsProvider.GetItem(item).Defense;
+            }
+
+            foreach (var ability in Abilities)
+            {
+                par += ability.Def;
             }
 
             return par;
@@ -50,9 +58,15 @@ public class PlayerData
         get
         {
             var par = BaseData.BaseDmg;
+
             foreach (var item in EquippedItems)
             {
                 par += ItemsProvider.GetItem(item).Dmg;
+            }
+
+            foreach (var ability in Abilities)
+            {
+                par += ability.Dmg;
             }
 
             return par;
@@ -68,6 +82,11 @@ public class PlayerData
             foreach (var item in EquippedItems)
             {
                 par += ItemsProvider.GetItem(item).AttackSpeed;
+            }
+
+            foreach (var ability in Abilities)
+            {
+                par += ability.AttackSpeed;
             }
 
             return par;

@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class AbilityData
 {
-    public int Id { get; private set; }
+    public AbilityType Id { get; private set; }
 
     public string Name { get { return "Ab" + Id; } }
 
@@ -10,18 +11,22 @@ public class AbilityData
 
     public float Cooldown { get; set; }
 
-    private string IconPath { get { return "/AbilityIcons/" + Id; } }
+    private string IconPath { get { return "AbilityIcons/" + (int)Id; } }
 
     public Sprite Icon
     {
         get
         {
             var icon = Resources.Load<Sprite>(IconPath);
+
+            if (icon == null)
+                throw new Exception();
+
             return icon;
         }
     }
 
-    public AbilityData(int id)
+    public AbilityData(AbilityType id)
     {
         Id = id;
     }

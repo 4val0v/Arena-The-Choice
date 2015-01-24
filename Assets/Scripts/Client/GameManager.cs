@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
         _client.OnNameUpdated += HandleOnNameUpdated;
         _client.OnDmgReceived += HandleOnDmgReceived;
         _client.OnEnemyDmgReceived += HandleOnEnemyDmgReceived;
+        _client.OnAbilityUsed += HandleOnAbilityUsed;
 
         _screenManager.CharacterChangeScreen.OnCharacterSelected += SelectClass;
         _screenManager.GetItem.ItemEquipClicked += GetItemOnItemEquipClicked;
@@ -144,6 +145,16 @@ public class GameManager : MonoBehaviour
         _client.PlayerData.CurrentHp -= dmg;
 
         _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp);
+    }
+
+    private void HandleOnAbilityUsed(int whoId, int abilityId)
+    {
+        var t = (AbilityType) abilityId;
+
+        if (t == AbilityType.Sword && whoId == _client.EnemyData.Id)
+        {
+            _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t));
+        }
     }
 
     private void GetItemOnItemEquipClicked(int i)
