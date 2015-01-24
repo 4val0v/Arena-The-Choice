@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
     void HandleOnFirstPlayerReceived(int playerId)
     {
-        Logger.Log("I'm first:" + (_client.PlayerData.Id == playerId));
+        Logger.Log("I'm first:" + (_client.PlayerData.Id == playerId) + ", fisrtId:" + playerId);
 
         _screenManager.GetItem.IsYouFirst = _client.PlayerData.Id == playerId;
 
@@ -132,6 +132,8 @@ public class GameManager : MonoBehaviour
             case NetStatus.ConnectedToBattle:
                 _screenManager.ChangeScreen(ScreenManager.Screens.CharacterChange);
                 _client.UpdateName(_screenManager.MainScreen.GetComponent<MainScreen>().NameOfPlayer);
+
+                Logger.Log("myId:" + _client.PlayerData.Id + ", enemyId:" + _client.EnemyData.Id);
                 break;
             default:
                 break;
