@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public static class AbilitiesProvider
 {
@@ -12,31 +13,50 @@ public static class AbilitiesProvider
         Items.Add(new AbilityData(AbilityType.Spear)
         {
             Description = "3 spear's attacks",
-            Cooldown = 20,
+            Cooldown = 10,
         });
 
         //Mace
         Items.Add(new AbilityData(AbilityType.Mace)
         {
             Description = "+200% Dmg",
-            Cooldown = 30,
+            Cooldown = 10,
         });
 
         //Sword
         Items.Add(new AbilityData(AbilityType.Sword)
         {
             Description = "-20% Attack speed",
-            Cooldown = 30,
+            Cooldown = 10,
         });
 
         //Axe
         Items.Add(new AbilityData(AbilityType.Axe)
         {
             Description = "+25% for a 5 times",
-            Cooldown = 30,
+            Cooldown = 10,
         });
 
+        //dagger
+        Items.Add(new AbilityData(AbilityType.Dagger)
+        {
+            Description = "Enemy take 20 dmg when he attacked you 5 times!",
+            Cooldown = 8,
+        });
 
+        //shield
+        Items.Add(new AbilityData(AbilityType.Shield)
+        {
+            Description = "Add 20 defense to you when enemy attack you 5 times",
+            Cooldown = 8,
+        });
+
+        //helm
+        Items.Add(new AbilityData(AbilityType.Helm)
+        {
+            Description = "+100HP every you 5 attacks",
+            Cooldown = 20,
+        });
     }
 
     public static AbilityData GetAbility(AbilityType id)
@@ -47,6 +67,6 @@ public static class AbilitiesProvider
                 return itemData;
         }
 
-        return null;
+        throw new Exception();
     }
 }
