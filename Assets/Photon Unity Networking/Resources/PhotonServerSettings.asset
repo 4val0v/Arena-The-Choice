@@ -36,4 +36,5 @@ MonoBehaviour:
   - AbilityUsedReceived
   - AttackReceived
   - GameFinishedReceived
+  - AdjHpReceived
   DisableAutoOpenWizard: 0
