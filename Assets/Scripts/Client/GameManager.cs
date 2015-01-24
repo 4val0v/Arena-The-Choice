@@ -58,22 +58,30 @@ public class GameManager:MonoBehaviour
 
 	void HandleOnStatusChanged (NetStatus status)
 	{
+		Logger.Log("status changed:" + status);
 		switch (status) {
 		case NetStatus.Connected:
-			// first screen;
+			_screenManager.ChangeScreen(ScreenManager.Screens.Main);
 			break;
 		case NetStatus.Disconnected:
-			//connect;to fist screen
+			_screenManager.ChangeScreen(ScreenManager.Screens.Main);
 			break;
 		case NetStatus.ConnectingToBattle:
-			//mod
 			break;
 		case NetStatus.ConnectedToBattle:
+			_screenManager.ChangeScreen(ScreenManager.Screens.CharacterChange);
 			break;
 		default:
 						break;
 		}
 	}
 
+	public void ConnectToBattle(bool isBot)
+	{
+		_client.CreateOrJoinToBattle(isBot ? GameMode.PvE : GameMode.PvP);
+	}
+
 	private INetClient _client;
+	[SerializeField]
+	private ScreenManager _screenManager;
 }
