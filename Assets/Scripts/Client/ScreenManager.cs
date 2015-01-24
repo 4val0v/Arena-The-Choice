@@ -119,7 +119,7 @@ public class ScreenManager : MonoBehaviour
         {
             if (_fightFinishedComp == null)
             {
-                _fightFinishedComp = _getItem.GetComponent<FightFinished>();
+                _fightFinishedComp = _fightFinished.GetComponent<FightFinished>();
             }
             return _fightFinishedComp;
         }
