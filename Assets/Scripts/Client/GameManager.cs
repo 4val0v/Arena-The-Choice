@@ -16,6 +16,11 @@ public class GameManager:MonoBehaviour
 		_client.OnGameFinished += HandleOnGameFinished;
 	}
 
+	void Start()
+	{
+		_client.Connect ();
+	}
+
 	void HandleOnGameFinished (int playrWinID)
 	{
 		//onPlayerWin;
