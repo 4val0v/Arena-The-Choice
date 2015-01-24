@@ -136,14 +136,14 @@ public class GameManager : MonoBehaviour
     private void HandleOnEnemyDmgReceived(int weaponId, int dmg)
     {
         _client.EnemyData.CurrentHp -= dmg;
-
+		_screenManager.Arena.MakeDmgToEnemy (dmg);
         _screenManager.TopBar.SetEnemyHp(_client.EnemyData.CurrentHp / _client.EnemyData.MaxHp);
     }
 
     private void HandleOnDmgReceived(int weaponId, int dmg)
     {
         _client.PlayerData.CurrentHp -= dmg;
-
+		_screenManager.Arena.MakeDmgToPlayer (dmg);
         _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp);
 
         for (int i = _client.PlayerData.Abilities.Count - 1; i >= 0; i--)

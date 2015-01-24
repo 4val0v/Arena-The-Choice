@@ -11,6 +11,10 @@ public class Arena : MonoBehaviour
         {
             item.OnClickToBtn = UseAbbility;
         }
+
+		enemyScores = new Vector2 (200, 0);
+
+		playerScores = new Vector2 (-200, 0);
     }
 
     private void UseAbbility(AbilityData data)
@@ -137,6 +141,53 @@ public class Arena : MonoBehaviour
         }
     }
 
+	public void MakeDmgToPlayer(int dmg)
+	{
+		var score = _scoresPrefab.Spawn (gameObject.transform, playerScores).GetComponent<DamageNums>();
+		string scrText = "";
+		if (dmg == 0)
+		{
+			_color = Color.green;
+			scrText = Texts.MISS;
+		}
+		else if (dmg > 0)
+		{
+			scrText = "+"+dmg;
+			_color = Color.green;
+		}
+		else
+		{
+			scrText = "-"+dmg;
+			_color = Color.red;
+		}
+
+		score.SetText (scrText, Color.red);
+	}
+
+	public void MakeDmgToEnemy(int dmg)
+	{
+		var score = _scoresPrefab.Spawn (gameObject.transform, enemyScores).GetComponent<DamageNums>();
+		string scrText = "";
+		if (dmg == 0)
+		{
+			scrText = Texts.MISS;
+			_color = Color.red;
+		}
+		else if (dmg > 0)
+		{
+			scrText = "+"+dmg;
+			_color = Color.green;
+		}
+		else
+		{
+			scrText = ""+dmg;
+			_color = Color.red;
+		}
+		score.SetText (scrText, _color);
+	}
+
+	private Color _color;
+
     private int _dmg;
     private bool _fightStarted;
     private float timerOfFight;
@@ -152,4 +203,11 @@ public class Arena : MonoBehaviour
 
     [SerializeField]
     private List<SkillBtn> _skillButtons;
+
+	[SerializeField]
+	private GameObject _scoresPrefab;
+
+	private Vector2 enemyScores;
+	private Vector2 playerScores;
+	
 }

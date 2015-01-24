@@ -5,6 +5,8 @@ public class Texts
 
     public const string WINNER_TITLE = "You win!";
     public const string LOSER_TITLE = "You lose!";
+
+	public const string MISS = "MISS!";
 }
 
 
