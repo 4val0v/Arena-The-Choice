@@ -22,7 +22,7 @@ public static class CharacterDataProviders
         _characters.Add(CharacterClass.Man, new CharacterData
         {
             Class = CharacterClass.Man,
-            BaseHp = 30000,
+            BaseHp = 3000,
             BaseDmg = 0,
             BaseAttackSpeed = 0,
             BaseDef = 0,
@@ -32,7 +32,7 @@ public static class CharacterDataProviders
         _characters.Add(CharacterClass.Woman, new CharacterData
         {
             Class = CharacterClass.Woman,
-			BaseHp = 30000,
+			BaseHp = 3000,
 			BaseDmg = 0,
 			BaseAttackSpeed = 0,
 			BaseDef = 0,
@@ -42,7 +42,7 @@ public static class CharacterDataProviders
         _characters.Add(CharacterClass.Orc, new CharacterData
         {
             Class = CharacterClass.Orc,
-			BaseHp = 30000,
+			BaseHp = 3000,
 			BaseDmg = 0,
 			BaseAttackSpeed = 0,
 			BaseDef = 0,
