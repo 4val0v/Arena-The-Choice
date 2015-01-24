@@ -21,9 +21,7 @@ public class Arena : MonoBehaviour {
 				time--;
 				if (time == 0)
 				{
-					_time = -1;
-					time = 3;
-					_timerText.gameObject.SetActive (false);
+					TimerFinish();
 				}
 				_timerText.text = ""+time;
 			}
@@ -35,6 +33,7 @@ public class Arena : MonoBehaviour {
 		_time = 0;
 		_timerText.text = ""+time;
 		_timerText.gameObject.SetActive (true);
+		ActivateAllBtns (false);
 	}
 
 	void OnDisable()
@@ -43,6 +42,23 @@ public class Arena : MonoBehaviour {
 		time = 3;
 		_timerText.gameObject.SetActive (false);
 	}
+
+	private void TimerFinish()
+	{
+		_time = -1;
+		time = 3;
+		_timerText.gameObject.SetActive (false);
+		ActivateAllBtns (true);
+	}
+
+	private void ActivateAllBtns(bool active)
+	{
+		foreach (var item in _skillButtons) 
+		{
+			item.ActivateBtn(active);
+		}
+	}
+
 
 	private int time = 3;
 	private float _time = -1; 

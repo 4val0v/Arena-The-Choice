@@ -19,7 +19,7 @@ public class SkillBtn : MonoBehaviour {
 		{
 			_cdwn = -1;
 			_text.text = "";
-			_btn.interactable = true;
+			ActivateBtn (true);
 		}
 	}
 	
@@ -36,8 +36,13 @@ public class SkillBtn : MonoBehaviour {
 
 	void StartCouldown()
 	{
-		_btn.interactable = false;
+		ActivateBtn (false);
 		_cdwn = _abl.Cooldown;
+	}
+
+	public void ActivateBtn(bool isActive)
+	{
+		_btn.interactable = isActive;
 	}
 
 	private AbilityData _abl;
