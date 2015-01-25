@@ -8,6 +8,11 @@ public class Texts
     public const string WINNER_TITLE = "You win!";
     public const string LOSER_TITLE = "You lose!";
 
+	public const string COIN = "Coin toss...";
+	public const string COIN_FIRST = "You pick first.";
+	public const string COIN_SECOND = "You pick second.";
+	
+
     public const string MISS = "MISS!";
 
     public static readonly Dictionary<EquipStep, string> StepsNames = new Dictionary<EquipStep, string>
