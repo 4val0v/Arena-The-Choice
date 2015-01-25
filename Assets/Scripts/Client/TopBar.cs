@@ -40,6 +40,16 @@ public class TopBar : MonoBehaviour
         _rightBigStat.SetName(name);
     }
 
+    public void SetIcon(Sprite icon)
+    {
+        _leftBigStat.SetHeroIcon(icon);
+    }
+
+    public void SetEnemyIcon(Sprite icon)
+    {
+        _rightBigStat.SetHeroIcon(icon);
+    }
+
     public void SetPlayerHp(float percent, float absolute)
     {
         HpSlider.value = percent;

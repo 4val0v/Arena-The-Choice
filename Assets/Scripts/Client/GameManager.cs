@@ -120,9 +120,10 @@ public class GameManager : MonoBehaviour
 
         _client.EnemyData.CurrentHp = _client.EnemyData.MaxHp;
         _screenManager.TopBar.SetEnemyHp(1f, _client.EnemyData.MaxHp);
+        _screenManager.TopBar.SetEnemyIcon(CharacterDataProviders.GetBaseData(classId).Icon);
     }
 
-    void HandleOnClassUpdated(CharacterClass obj)
+    void HandleOnClassUpdated(CharacterClass classId)
     {
         CheckLastSelectionOfCharacter();
 
@@ -132,6 +133,8 @@ public class GameManager : MonoBehaviour
 
         _client.PlayerData.CurrentHp = _client.PlayerData.MaxHp;
         _screenManager.TopBar.SetPlayerHp(1f, _client.PlayerData.MaxHp);
+
+        _screenManager.TopBar.SetIcon(CharacterDataProviders.GetBaseData(classId).Icon);
     }
 
     void HandleOnNameUpdated(string name)
