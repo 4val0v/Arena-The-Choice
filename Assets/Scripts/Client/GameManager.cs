@@ -206,18 +206,22 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if (t == AbilityType.Shield || t == AbilityType.BigShield)
+            if (t == AbilityType.Shield)
             {
                 _client.EnemyData.Abilities.Add(AbilityFactory.CreateAbility(AbilityType.EnemyShield, this));
+            }
+            else if (t == AbilityType.BigShield)
+            {
+                _client.EnemyData.Abilities.Add(AbilityFactory.CreateAbility(AbilityType.EnemyBigShield, this));
             }
         }
         else if (whoId == _client.PlayerData.Id)
         {
             if (t == AbilityType.Axe || t == AbilityType.Sword || t == AbilityType.Mace || t == AbilityType.Spear)
             {
-                if (_client.EnemyData.Abilities.Any(n => n.Id == AbilityType.EnemyShield))
+                if (_client.EnemyData.Abilities.Any(n => n.Id == AbilityType.EnemyShield || n.Id == AbilityType.EnemyBigShield))
                 {
-                    _client.EnemyData.Abilities.RemoveAll(n => n.Id == AbilityType.EnemyShield);
+                    _client.EnemyData.Abilities.RemoveAll(n => n.Id == AbilityType.EnemyShield || n.Id == AbilityType.EnemyBigShield);
                 }
             }
 

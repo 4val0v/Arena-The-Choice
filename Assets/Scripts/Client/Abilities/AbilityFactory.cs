@@ -9,6 +9,7 @@
     BigShield,
     Helm,
     EnemyShield,
+    EnemyBigShield
 }
 
 public static class AbilityFactory
@@ -42,6 +43,9 @@ public static class AbilityFactory
                 break;
             case AbilityType.EnemyShield:
                 ab = new EnemyShieldAbility();
+                break;
+            case AbilityType.EnemyBigShield:
+                ab = new EnemyBigShieldAbility();
                 break;
             case AbilityType.Helm:
                 ab = new HelmAbility();
