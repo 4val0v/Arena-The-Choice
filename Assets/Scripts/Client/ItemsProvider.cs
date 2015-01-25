@@ -75,25 +75,21 @@ public static class ItemsProvider
                   {
                       //шлем с рогами
                       Type = ItemType.Helm,
-                      AttackSpeed = 0
                   });
         Items.Add(new ItemData(10, AbilityType.Helm)
                   {
                       //шлем крестоносца
                       Type = ItemType.Helm,
-                      AttackSpeed = -5
                   });
         Items.Add(new ItemData(11, AbilityType.Helm)
                   {
                       //шлем с пером
                       Type = ItemType.Helm,
-                      AttackSpeed = +5
                   });
         Items.Add(new ItemData(12, AbilityType.Helm)
                   {
                       //шлем с копьем (или другой любой)
                       Type = ItemType.Helm,
-                      AttackSpeed = 0
                   });
     }
 
