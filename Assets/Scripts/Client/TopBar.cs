@@ -7,98 +7,167 @@ public class TopBar : MonoBehaviour
     public Text PlayerName;
     public Text EnemyName;
 
-    public Slider PlayerHp;
     public Slider EnemyHp;
 
-    public Text DmgText;
-    public Text Deftext;
-    public Text AttackSpeedText;
+    [SerializeField]
+    private BigStat _leftBigStat;
+
+    [SerializeField]
+    private BigStat _rightBigStat;
+
+    public Slider HpSlider;
+    public Text HpValueText;
+
+    public Slider DmgSlider;
+    public Text DmgValueText;
+
+    public Slider DefSlider;
+    public Text DefValueText;
+
+    public Slider AsSlider;
+    public Text AsValueText;
 
     public void UpdatePlayerName(string name)
     {
         PlayerName.text = name;
+        _leftBigStat.SetName(name);
     }
 
     public void UpdateEnemyName(string name)
     {
         EnemyName.text = name;
+        _rightBigStat.SetName(name);
     }
 
-    public void SetPlayerHp(float percent)
+    public void SetPlayerHp(float percent, float absolute)
     {
-        PlayerHp.value = percent;
+        HpSlider.value = percent;
+        _leftBigStat.SetHp(percent, absolute);
     }
 
-    public void SetEnemyHp(float percent)
+    public void SetEnemyHp(float percent, float absolute)
     {
         EnemyHp.value = percent;
+        _rightBigStat.SetHp(percent, absolute);
     }
 
-    public void SetDmg(float dmg)
+    public void SetDmg(float val)
     {
-        DmgText.text = dmg + "";
+        _leftBigStat.SetDmg(1f, val);
+
+        DmgSlider.value = 1f;
+        DmgValueText.text = val + "";
     }
 
-    public void SetDef(float def)
+    public void SetDef(float val)
     {
-        Deftext.text = def + "";
+        _leftBigStat.SetDef(1f, val);
+
+        DefSlider.value = 1f;
+        DefValueText.text = val + "";
     }
 
-    public void SetAttackSpeed(float attackSpeed)
+    public void SetAttackSpeed(float val)
     {
-        AttackSpeedText.text = attackSpeed + "";
+        _leftBigStat.SetAttackSpeed(1f, val);
+
+        AsSlider.value = 1f;
+        AsValueText.text = val + "";
     }
 
     public void SetDmg(float dmg, float addDmg)
     {
-        var txt = dmg + "";
+        _leftBigStat.SetDmg(1f, dmg, addDmg);
 
-        if (addDmg > 0)
+        UpdateUi(DmgSlider, DmgValueText, 1f, dmg, addDmg);
+    }
+
+    public void SetDef(float def, float addDef)
+    {
+        _leftBigStat.SetDef(1f, def, addDef);
+
+        UpdateUi(DefSlider, DefValueText, 1f, def, addDef);
+    }
+
+    public void SetAttackSpeed(float attackSpeed, float addAttackSpeed)
+    {
+        _leftBigStat.SetAttackSpeed(1f, attackSpeed, addAttackSpeed);
+
+        UpdateUi(AsSlider, AsValueText, 1f, attackSpeed, addAttackSpeed);
+    }
+
+    #region right
+    public void SetEnemyDmg(float dmg)
+    {
+        _rightBigStat.SetDmg(1f, dmg);
+    }
+
+    public void SetEnemyDef(float def)
+    {
+        _rightBigStat.SetDef(1f, def);
+    }
+
+    public void SetEnemyAttackSpeed(float attackSpeed)
+    {
+        _rightBigStat.SetAttackSpeed(1f, attackSpeed);
+    }
+
+    #endregion
+
+    private void UpdateUi(Slider slider, Text valText, float percent, float val, float addVal)
+    {
+        var txt = val + "";
+
+        if (addVal > 0)
         {
-            txt += "<color=green>+" + addDmg + "</color>";
+            txt += "<color=green>+" + addVal + "</color>";
         }
-        else if (addDmg < -0.001f)
+        else if (addVal < -0.001f)
         {
-            txt += "<color=red>" + addDmg + "</color>";
+            txt += "<color=red>" + addVal + "</color>";
         }
         else
         {
 
         }
 
-        DmgText.text = txt;
+        if (slider != null)
+            slider.value = percent;
+
+        if (valText != null)
+            valText.text = txt;
     }
 
-    public void SetDef(float def, float addDef)
+    public void SetItemsIconsLeft(Sprite icon1, Sprite icon2, Sprite icon3)
     {
-        var txt = def + "";
-
-        if (addDef > 0)
-        {
-            txt += "<color=green>+" + addDef + "</color>";
-        }
-        else if (addDef < -0.001f)
-        {
-            txt += "<color=red>" + addDef + "</color>";
-        }
-
-        Deftext.text = txt;
+        _leftBigStat.SetItemsIcons(icon1, icon2, icon3);
+    }
+    public void SetItemsIconsRight(Sprite icon1, Sprite icon2, Sprite icon3)
+    {
+        _rightBigStat.SetItemsIcons(icon1, icon2, icon3);
     }
 
-    public void SetAttackSpeed(float attackSpeed, float addAttackSpeed)
+    public void SwitchStat(bool isBig)
     {
-        var txt = attackSpeed + "";
+        _leftBigStat.gameObject.SetActive(isBig);
+        _rightBigStat.gameObject.SetActive(isBig);
 
-        if (addAttackSpeed > 0)
-        {
-            txt += "<color=green>+" + addAttackSpeed + "</color>";
-        }
-        else if (addAttackSpeed < -0.001f)
-        {
-            txt += "<color=red>" + addAttackSpeed + "</color>";
-        }
+        HpSlider.gameObject.SetActive(!isBig);
+        HpValueText.gameObject.SetActive(!isBig);
 
-        AttackSpeedText.text = txt;
+        DmgSlider.gameObject.SetActive(!isBig);
+        DmgValueText.gameObject.SetActive(!isBig);
+
+        AsSlider.gameObject.SetActive(!isBig);
+        AsValueText.gameObject.SetActive(!isBig);
+
+        DefSlider.gameObject.SetActive(!isBig);
+        DefValueText.gameObject.SetActive(!isBig);
+
+        EnemyHp.gameObject.SetActive(!isBig);
+
+        EnemyName.gameObject.SetActive(!isBig);
+        PlayerName.gameObject.SetActive(!isBig);
     }
 
     public void Show()

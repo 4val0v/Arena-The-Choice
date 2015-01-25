@@ -24,10 +24,14 @@ public class ScreenManager : MonoBehaviour
                 _currentScreen = _connecting;
                 break;
             case Screens.GetItem:
+                _topBar.SetItemsIconsLeft(null, null, null);
+                _topBar.SetItemsIconsRight(null, null, null);
                 _topBar.Show();
+                _topBar.SwitchStat(true);
                 _currentScreen = _getItem;
                 break;
             case Screens.Arena:
+                _topBar.SwitchStat(false);
                 _topBar.Show();
                 _currentScreen = _arena;
                 break;

@@ -24,6 +24,12 @@ public class GetItem : MonoBehaviour
     [SerializeField]
     private GameObject _equipItemBtn;
 
+    [SerializeField]
+    private Text _knightText;
+
+    [SerializeField]
+    private GameObject _knightObj;
+
     public readonly List<StockItemView> StockItems = new List<StockItemView>();
 
     public event Action<int> ItemEquipClicked = delegate { };
@@ -32,6 +38,8 @@ public class GetItem : MonoBehaviour
     public bool IsMyTurn { get; private set; }
 
     public int FirstPlayerId { get; private set; }
+
+    private INetClient Client { get { return PunNetClient.Instance; } }
 
     void Start()
     {
@@ -75,6 +83,8 @@ public class GetItem : MonoBehaviour
         }
 
         SetTurn(IsYouFirst);
+
+        SetKnightVisible(false);
     }
 
     public void SetFirstPlayerId(int playerId)
@@ -109,11 +119,24 @@ public class GetItem : MonoBehaviour
         }
     }
 
+    public void SetKnightVisible(bool visible)
+    {
+        _knightObj.SetActive(visible);
+    }
+
+    public void SetDescriptionVisible(bool visible)
+    {
+        _itemDescriptionText.gameObject.SetActive(visible);
+    }
+
+    public void UpdateKnightText(string text)
+    {
+        _knightText.text = text;
+    }
+
     public void UpdateStock(EquipStep step, IEnumerable<int> items)
     {
-        _equipStepText.text = "Now step is " + step;
-
-        // Logger.Log("Update sctock:" + items.Count() + " items");
+        _equipStepText.text = Texts.StepsNames[step];
 
         //clear all
         ClearStock();
@@ -150,10 +173,6 @@ public class GetItem : MonoBehaviour
         {
             child.IsEquipped = myItems.Any(n => n == child.ItemData.Id) || enemyItems.Any(n => n == child.ItemData.Id);
         }
-
-        //refresh my inventory
-
-        //refresh enemy inventory
     }
 
     public void UpdateItemDescription(string text)

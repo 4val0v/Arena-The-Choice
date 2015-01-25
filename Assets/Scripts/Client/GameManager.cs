@@ -78,6 +78,12 @@ public class GameManager : MonoBehaviour
         _screenManager.TopBar.SetDmg(_client.PlayerData.Dmg);
         _screenManager.TopBar.SetDef(_client.PlayerData.Def);
         _screenManager.TopBar.SetAttackSpeed(_client.PlayerData.AttackSpeed);
+
+        _screenManager.TopBar.SetEnemyDmg(_client.EnemyData.Dmg);
+        _screenManager.TopBar.SetEnemyDef(_client.EnemyData.Def);
+        _screenManager.TopBar.SetEnemyAttackSpeed(_client.EnemyData.AttackSpeed);
+
+        UpdateInventory();
     }
 
     void HandleOnStepItemsReceived(EquipStep step, System.Collections.Generic.IEnumerable<int> items)
@@ -107,10 +113,13 @@ public class GameManager : MonoBehaviour
     void HandleOnEnemyClassUpdated(CharacterClass classId)
     {
         CheckLastSelectionOfCharacter();
-        //change enemy character 
-        //Logger.Log("enemy classId:" + classId);
+
+        _screenManager.TopBar.SetEnemyDmg(_client.EnemyData.Dmg);
+        _screenManager.TopBar.SetEnemyDef(_client.EnemyData.Def);
+        _screenManager.TopBar.SetEnemyAttackSpeed(_client.EnemyData.AttackSpeed);
+
         _client.EnemyData.CurrentHp = _client.EnemyData.MaxHp;
-        _screenManager.TopBar.SetEnemyHp(1f);
+        _screenManager.TopBar.SetEnemyHp(1f, _client.EnemyData.MaxHp);
     }
 
     void HandleOnClassUpdated(CharacterClass obj)
@@ -122,7 +131,7 @@ public class GameManager : MonoBehaviour
         _screenManager.TopBar.SetAttackSpeed(_client.PlayerData.AttackSpeed);
 
         _client.PlayerData.CurrentHp = _client.PlayerData.MaxHp;
-        _screenManager.TopBar.SetPlayerHp(1f);
+        _screenManager.TopBar.SetPlayerHp(1f, _client.PlayerData.MaxHp);
     }
 
     void HandleOnNameUpdated(string name)
@@ -149,7 +158,7 @@ public class GameManager : MonoBehaviour
 
         _client.EnemyData.CurrentHp -= dmg;
         _screenManager.Arena.MakeDmgToEnemy(dmg);
-        _screenManager.TopBar.SetEnemyHp(_client.EnemyData.CurrentHp / _client.EnemyData.MaxHp);
+        _screenManager.TopBar.SetEnemyHp(_client.EnemyData.CurrentHp / _client.EnemyData.MaxHp, _client.EnemyData.CurrentHp);
     }
 
     private void HandleOnDmgReceived(int weaponId, int dmg)
@@ -158,7 +167,7 @@ public class GameManager : MonoBehaviour
 
         _client.PlayerData.CurrentHp -= dmg;
         _screenManager.Arena.MakeDmgToPlayer(dmg);
-        _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp);
+        _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp, _client.PlayerData.CurrentHp);
 
         for (int i = _client.PlayerData.Abilities.Count - 1; i >= 0; i--)
         {
@@ -177,7 +186,7 @@ public class GameManager : MonoBehaviour
             {
                 _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t, this));
                 RecalculateAdditionalStats();
-                Logger.Log("add enemy ability:" + t);
+                //Logger.Log("add enemy ability:" + t);
             }
 
             if (t == AbilityType.Shield)
@@ -191,27 +200,49 @@ public class GameManager : MonoBehaviour
             {
                 _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t, this));
                 RecalculateAdditionalStats();
-                Logger.Log("add ability:" + t);
+                //Logger.Log("add ability:" + t);
             }
         }
     }
 
     private void ClientOnOnEnemyHpAdjusted(int adjHp)
     {
-        Logger.Log("ClientOnOnEnemyHpAdjusted:" + adjHp);
+        //Logger.Log("ClientOnOnEnemyHpAdjusted:" + adjHp);
 
         _client.EnemyData.CurrentHp += adjHp;
         _screenManager.Arena.MakeDmgToEnemy(-adjHp);
-        _screenManager.TopBar.SetEnemyHp(_client.EnemyData.CurrentHp / _client.EnemyData.MaxHp);
+        _screenManager.TopBar.SetEnemyHp(_client.EnemyData.CurrentHp / _client.EnemyData.MaxHp, _client.EnemyData.CurrentHp);
     }
 
     private void ClientOnOnHpAdjusted(int adjHp)
     {
-        Logger.Log("ClientOnOnHpAdjusted:" + adjHp);
+        //Logger.Log("ClientOnOnHpAdjusted:" + adjHp);
 
         _client.PlayerData.CurrentHp += adjHp;
         _screenManager.Arena.MakeDmgToPlayer(-adjHp);
-        _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp);
+        _screenManager.TopBar.SetPlayerHp(_client.PlayerData.CurrentHp / _client.PlayerData.MaxHp, _client.PlayerData.CurrentHp);
+    }
+
+    private void UpdateInventory()
+    {
+        var sprites = new Sprite[3] { null, null, null };
+
+        //refresh my inventory
+        int i = 0;
+        foreach (var item in _client.PlayerData.EquippedItems)
+        {
+            sprites[i++] = ItemsProvider.GetItem(item).Icon;
+        }
+        _screenManager.TopBar.SetItemsIconsLeft(sprites[0], sprites[1], sprites[2]);
+
+        //refresh enemy inventory
+        sprites = new Sprite[3] { null, null, null };
+        i = 0;
+        foreach (var item in _client.EnemyData.EquippedItems)
+        {
+            sprites[i++] = ItemsProvider.GetItem(item).Icon;
+        }
+        _screenManager.TopBar.SetItemsIconsRight(sprites[0], sprites[1], sprites[2]);
     }
 
     public void RecalculateAdditionalStats()

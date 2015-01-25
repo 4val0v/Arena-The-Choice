@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class CharacterData
 {
@@ -9,6 +10,11 @@ public class CharacterData
     public float BaseDef { get; set; }
     public float BaseAttackSpeed { get; set; }
     public float BaseAccuracy { get; set; }
+
+    public Sprite Icon
+    {
+        get { return Resources.Load<Sprite>("HeroIcons/" + Class); }
+    }
 }
 
 public static class CharacterDataProviders
@@ -32,21 +38,21 @@ public static class CharacterDataProviders
         _characters.Add(CharacterClass.Woman, new CharacterData
         {
             Class = CharacterClass.Woman,
-			BaseHp = 3000,
-			BaseDmg = 0,
-			BaseAttackSpeed = 0,
-			BaseDef = 0,
-			BaseAccuracy = 0,
+            BaseHp = 3000,
+            BaseDmg = 0,
+            BaseAttackSpeed = 0,
+            BaseDef = 0,
+            BaseAccuracy = 0,
         });
 
         _characters.Add(CharacterClass.Orc, new CharacterData
         {
             Class = CharacterClass.Orc,
-			BaseHp = 3000,
-			BaseDmg = 0,
-			BaseAttackSpeed = 0,
-			BaseDef = 0,
-			BaseAccuracy = 0,
+            BaseHp = 3000,
+            BaseDmg = 0,
+            BaseAttackSpeed = 0,
+            BaseDef = 0,
+            BaseAccuracy = 0,
         });
     }
 
