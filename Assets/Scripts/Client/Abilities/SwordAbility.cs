@@ -40,7 +40,7 @@
 
     private const float AttackSpeedK = -0.5f;
 
-    private const int AttacksCount = 6;
+    private const int AttacksCount = 3;
 
     private int _remainAttackCount = AttacksCount;
 
