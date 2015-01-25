@@ -5,6 +5,15 @@ using System.Collections.Generic;
 
 public class Arena : MonoBehaviour
 {
+    public CharacterView MyMan;
+    public CharacterView MyWoman;
+
+    public CharacterView EnemyMan;
+    public CharacterView EnemyWoman;
+
+    private CharacterView _player;
+    private CharacterView _enemy;
+
     void Awake()
     {
         foreach (var item in _skillButtons)
@@ -12,9 +21,9 @@ public class Arena : MonoBehaviour
             item.OnClickToBtn = UseAbbility;
         }
 
-		enemyScores = new Vector2 (200, 0);
+        enemyScores = new Vector2(200, 0);
 
-		playerScores = new Vector2 (-200, 0);
+        playerScores = new Vector2(-200, 0);
     }
 
     private void UseAbbility(AbilityData data)
@@ -64,6 +73,21 @@ public class Arena : MonoBehaviour
                 _dmg = 0;
             }
             _client.SendAttack(0, _dmg);
+
+
+
+            //play anim for second hhand
+            foreach (var item in _client.PlayerData.EquippedItems)
+            {
+                if (item == 5 || item == 6)
+                {
+                    _player.PlayAttack(false);
+                    return;
+                }
+            }
+
+            //play anim for main hand
+            _player.PlayAttack(true);
         }
     }
 
@@ -87,6 +111,11 @@ public class Arena : MonoBehaviour
 
     void OnEnable()
     {
+        MyMan.HideAll();
+        MyWoman.HideAll();
+        EnemyMan.HideAll();
+        EnemyWoman.HideAll();
+
         _timerOnScreen = 0;
         _timerText.text = "" + time;
         _timerText.gameObject.SetActive(true);
@@ -95,6 +124,9 @@ public class Arena : MonoBehaviour
         {
             _skillButtons[i].SetAbillity(ItemsProvider.GetItem(_client.PlayerData.EquippedItems[i]).Ability);
         }
+
+        ShowPlayer();
+        ShowEnemy();
     }
 
     void OnDisable()
@@ -103,6 +135,42 @@ public class Arena : MonoBehaviour
         time = 3;
         _timerText.gameObject.SetActive(false);
         _fightStarted = false;
+
+        if (_enemy != null)
+        {
+            _enemy.HideAll();
+            _enemy = null;
+        }
+
+        if (_player != null)
+        {
+            _player.HideAll();
+            _player = null;
+        }
+    }
+
+    private void ShowPlayer()
+    {
+        var data = _client.PlayerData;
+
+        if (data.Class == CharacterClass.Man)
+            _player = MyMan;
+        else if (data.Class == CharacterClass.Woman)
+            _player = MyWoman;
+
+        _player.ShowOnlyIds(data.EquippedItems);
+    }
+
+    private void ShowEnemy()
+    {
+        var data = _client.EnemyData;
+
+        if (data.Class == CharacterClass.Man)
+            _enemy = EnemyMan;
+        else if (data.Class == CharacterClass.Woman)
+            _enemy = EnemyWoman;
+
+        _enemy.ShowOnlyIds(data.EquippedItems);
     }
 
     private void TimerFinish()
@@ -141,54 +209,69 @@ public class Arena : MonoBehaviour
         }
     }
 
-	public void MakeDmgToPlayer(int dmg)
-	{
-		dmg = - dmg;
-		var score = _scoresPrefab.Spawn (gameObject.transform, playerScores).GetComponent<DamageNums>();
-		string scrText = "";
-		if (dmg == 0)
-		{
-			_color = Color.red;
-			scrText = Texts.MISS;
-		}
-		else if (dmg > 0)
-		{
-			scrText = "+"+dmg;
-			_color = Color.green;
-		}
-		else
-		{
-			scrText = ""+dmg;
-			_color = Color.red;
-		}
+    public void MakeDmgToPlayer(int dmg)
+    {
+        dmg = -dmg;
+        var score = _scoresPrefab.Spawn(gameObject.transform, playerScores).GetComponent<DamageNums>();
+        string scrText = "";
+        if (dmg == 0)
+        {
+            _color = Color.red;
+            scrText = Texts.MISS;
+        }
+        else if (dmg > 0)
+        {
+            scrText = "+" + dmg;
+            _color = Color.green;
+        }
+        else
+        {
+            scrText = "" + dmg;
+            _color = Color.red;
+        }
 
-		score.SetText (scrText, _color);
-	}
+        score.SetText(scrText, _color);
+    }
 
-	public void MakeDmgToEnemy(int dmg)
-	{
-		dmg = - dmg;
-		var score = _scoresPrefab.Spawn (gameObject.transform, enemyScores).GetComponent<DamageNums>();
-		string scrText = "";
-		if (dmg == 0)
-		{
-			_color = Color.red;
-			scrText = Texts.MISS;
-		}
-		else if (dmg > 0)
-		{
-			scrText = "+"+dmg;
-			_color = Color.green;
-		}
-		else
-		{
-			scrText = ""+dmg;
-			_color = Color.red;
-		}
-		score.SetText (scrText, _color);
-	}
+    public void MakeDmgToEnemy(int dmg)
+    {
+        dmg = -dmg;
+        var score = _scoresPrefab.Spawn(gameObject.transform, enemyScores).GetComponent<DamageNums>();
+        string scrText = "";
+        if (dmg == 0)
+        {
+            _color = Color.red;
+            scrText = Texts.MISS;
+        }
+        else if (dmg > 0)
+        {
+            scrText = "+" + dmg;
+            _color = Color.green;
+        }
+        else
+        {
+            scrText = "" + dmg;
+            _color = Color.red;
+        }
+        score.SetText(scrText, _color);
+    }
 
-	private Color _color;
+    public void PlayEnemyAttack()
+    {
+        //play anim for second hhand
+        foreach (var item in _client.EnemyData.EquippedItems)
+        {
+            if (item == 5 || item == 6)
+            {
+                _enemy.PlayAttack(false);
+                return;
+            }
+        }
+
+        //play anim for main hand
+        _enemy.PlayAttack(true);
+    }
+    private Color _color;
 
     private int _dmg;
     private bool _fightStarted;
@@ -206,10 +289,10 @@ public class Arena : MonoBehaviour
     [SerializeField]
     private List<SkillBtn> _skillButtons;
 
-	[SerializeField]
-	private GameObject _scoresPrefab;
+    [SerializeField]
+    private GameObject _scoresPrefab;
 
-	private Vector2 enemyScores;
-	private Vector2 playerScores;
-	
+    private Vector2 enemyScores;
+    private Vector2 playerScores;
+
 }

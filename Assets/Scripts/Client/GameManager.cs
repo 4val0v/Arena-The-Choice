@@ -177,6 +177,8 @@ public class GameManager : MonoBehaviour
             var ability = _client.PlayerData.Abilities[i];
             ability.UpdateOnDmgReceive();
         }
+
+        _screenManager.Arena.PlayEnemyAttack();
     }
 
     private void HandleOnAbilityUsed(int whoId, int abilityId)

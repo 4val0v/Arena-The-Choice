@@ -265,6 +265,48 @@ public class PunNetClient : Photon.PunBehaviour, INetClient
         Disconnect();
     }
 
+    public override void OnDisconnectedFromPhoton()
+    {
+        base.OnDisconnectedFromPhoton();
+
+        if (Status != NetStatus.Disconnected && Status != NetStatus.Disconnecting)
+        {
+            Disconnect();
+        }
+    }
+
+    public override void OnFailedToConnectToPhoton(DisconnectCause cause)
+    {
+        base.OnFailedToConnectToPhoton(cause);
+
+        if (Status != NetStatus.Disconnected && Status != NetStatus.Disconnecting)
+        {
+            Disconnect();
+        }
+    }
+
+    public override void OnPhotonMaxCccuReached()
+    {
+        base.OnPhotonMaxCccuReached();
+
+        Debug.Log("OnPhotonMaxCccuReached");
+
+        if (Status != NetStatus.Disconnected && Status != NetStatus.Disconnecting)
+        {
+            Disconnect();
+        }
+    }
+
+    public override void OnConnectionFail(DisconnectCause cause)
+    {
+        base.OnConnectionFail(cause);
+
+        if (Status != NetStatus.Disconnected && Status != NetStatus.Disconnecting)
+        {
+            Disconnect();
+        }
+    }
+
     #endregion
 
     public void RaiseBattleStarted()
