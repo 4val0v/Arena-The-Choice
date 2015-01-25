@@ -36,7 +36,7 @@ public class SkillBtn : MonoBehaviour {
 		_cdwn = -1;
 	}
 
-	void StartCouldown()
+	public void StartCouldown()
 	{
 		ActivateBtn (false);
 		_cdwn = _abl.Cooldown;
@@ -44,7 +44,14 @@ public class SkillBtn : MonoBehaviour {
 
 	public void OnClick()
 	{
-		StartCouldown ();
+		if (_abl.Id != AbilityType.Shield)
+		{
+			StartCouldown ();
+		}
+		else
+		{
+			ActivateBtn (false);
+		}
 		if (OnClickToBtn != null)
 		{
 			OnClickToBtn.Invoke(_abl);
@@ -54,6 +61,12 @@ public class SkillBtn : MonoBehaviour {
 	public void ActivateBtn(bool isActive)
 	{
 		_btn.interactable = isActive;
+	}
+
+	public AbilityData Abl {
+		get {
+			return _abl;
+		}
 	}
 
 	private AbilityData _abl;

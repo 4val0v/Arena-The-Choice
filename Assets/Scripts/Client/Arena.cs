@@ -271,6 +271,18 @@ public class Arena : MonoBehaviour
         //play anim for main hand
         _enemy.PlayAttack(true);
     }
+
+	public void StartCouldownFor(AbilityType type)
+	{
+		foreach (var item in _skillButtons) 
+		{
+			if (item.Abl.Id == type)
+			{
+				item.StartCouldown();
+			}
+		}
+	}
+
     private Color _color;
 
     private int _dmg;
