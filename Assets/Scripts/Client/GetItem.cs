@@ -228,7 +228,7 @@ public class GetItem : MonoBehaviour
             case ItemType.LeftHand:
                 txt += "Dmg:" + item.Dmg + "\n";
                 txt += "AS:" + item.AttackSpeed + "\n";
-                txt += "Accur:" + item.Accuracy;
+                txt += "Accur:" + item.Accuracy + "\n";
                 break;
 
             case ItemType.RightHand:
@@ -238,28 +238,33 @@ public class GetItem : MonoBehaviour
                 }
                 else
                 {
-                    txt += "Dmg:" + item.Dmg + "\n";
-                    txt += "AS:" + item.AttackSpeed + "\n";
-                    txt += "Accur:" + item.Accuracy;
+                    if (item.Dmg > 0.01f)
+                        txt += "Dmg:" + item.Dmg + "\n";
+                    if (item.AttackSpeed > 0.01f)
+                        txt += "AS:" + item.AttackSpeed + "\n";
+                    if (item.Accuracy > 0.01f)
+                        txt += "Accur:" + item.Accuracy + "\n";
                 }
                 break;
 
             case ItemType.Helm:
-                txt += "Def:" + item.Defense;
+                // txt += "Def:" + item.Defense;
                 break;
         }
 
         if (item.Ability != null)
-            txt += "\n" + GetAbilityDescription(item.Ability);
+            txt += GetAbilityDescription(item.Ability);
 
         return txt;
     }
 
     private string GetAbilityDescription(AbilityData data)
     {
-        string txt = "";
+        string txt = "Active skill: ";
 
-        txt = data.Description;
+        txt += data.Description + "\n";
+
+        txt += "Cooldown:" + data.Cooldown + " seconds.";
 
         return txt;
     }

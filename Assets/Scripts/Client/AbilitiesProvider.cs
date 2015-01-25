@@ -12,56 +12,56 @@ public static class AbilitiesProvider
         //Spear
         Items.Add(new AbilityData(AbilityType.Spear)
         {
-            Description = "3 spear's attacks",
+            Description = "Main. Quickly triple damage",
             Cooldown = 10,
         });
 
         //Mace
         Items.Add(new AbilityData(AbilityType.Mace)
         {
-            Description = "+200% Dmg",
+            Description = "Main. One strong attack +230% Dmg",
             Cooldown = 10,
         });
 
         //Sword
         Items.Add(new AbilityData(AbilityType.Sword)
         {
-            Description = "-20% Attack speed",
+            Description = "Main. Slowing enemy attacks by 50% for 2 attack",
             Cooldown = 10,
         });
 
         //Axe
         Items.Add(new AbilityData(AbilityType.Axe)
         {
-            Description = "+25% for a 5 times",
+            Description = "Main. Next 5 attack inscreased by 25% DMG",
             Cooldown = 10,
         });
 
         //dagger
         Items.Add(new AbilityData(AbilityType.Dagger)
         {
-            Description = "Enemy take 20 dmg when he attacked you!",
+            Description = "An open wound. Enemy receives 20 dmg per their attack.\n('Heal' takes effect)",
             Cooldown = 25,
         });
 
         //shield
         Items.Add(new AbilityData(AbilityType.Shield)
         {
-            Description = "Add 20 defense to you when enemy attack you",
+            Description = "Block 15 dmg per enemy attack.\n(Main skills takes effect)",
             Cooldown = 15,
         });
 
         //shield
         Items.Add(new AbilityData(AbilityType.BigShield)
         {
-            Description = "Add 20 defense to you when enemy attack you",
+            Description = "Block 20 dmg per enemy attack.\n(Main skills takes effect)",
             Cooldown = 15,
         });
 
         //helm
         Items.Add(new AbilityData(AbilityType.Helm)
         {
-            Description = "+50HP every you 5 attacks",
+            Description = "'Heal'. Healing +50HP per 5 your attacks",
             Cooldown = 30,
         });
     }
