@@ -8,6 +8,7 @@ public class TopBar : MonoBehaviour
     public Text EnemyName;
 
     public Slider EnemyHp;
+    public Text EnemyHpValueText;
 
     [SerializeField]
     private BigStat _leftBigStat;
@@ -42,12 +43,14 @@ public class TopBar : MonoBehaviour
     public void SetPlayerHp(float percent, float absolute)
     {
         HpSlider.value = percent;
+        HpValueText.text = absolute + "";
         _leftBigStat.SetHp(percent, absolute);
     }
 
     public void SetEnemyHp(float percent, float absolute)
     {
         EnemyHp.value = percent;
+        EnemyHpValueText.text = absolute + "";
         _rightBigStat.SetHp(percent, absolute);
     }
 

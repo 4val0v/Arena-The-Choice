@@ -25,6 +25,11 @@ public class PlayerData
 
             if (_hp < 0)
                 _hp = 0;
+
+            if (_hp > MaxHp)
+            {
+                _hp = MaxHp;
+            }
         }
     }
 
