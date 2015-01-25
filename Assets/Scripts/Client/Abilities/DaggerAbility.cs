@@ -21,20 +21,9 @@
     }
 
     private const int DmgWithAttack = 20;
-    private const int AttacksCount = 6;
-
-    private int _remainAttackCount = AttacksCount;
 
     public override void UpdateOnAttack()
     {
-        _remainAttackCount--;
-
-        if (_remainAttackCount == 0)
-        {
-            RemoveFromAbilities();
-            return;
-        }
-
         NetPlayer.My.AdjHp(-DmgWithAttack);
     }
 }

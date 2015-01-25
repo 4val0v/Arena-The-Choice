@@ -24,7 +24,7 @@ public class HelmAbility : BaseAbility
     }
 
     private const int AttacksCount = 5;
-    private const int HealthHp = 100;
+    private const int HealthHp = 50;
 
     private int _remainAttackCount = AttacksCount;
 

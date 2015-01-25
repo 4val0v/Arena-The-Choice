@@ -1,8 +1,8 @@
-﻿public class ShieldAbility : BaseAbility
+﻿public class BigShieldAbility : BaseAbility
 {
     public override AbilityType Id
     {
-        get { return AbilityType.Shield; }
+        get { return AbilityType.BigShield; }
     }
 
     public override float Dmg
@@ -12,7 +12,7 @@
 
     public override float Def
     {
-        get { return 15; }
+        get { return 20f; }
     }
 
     public override float AttackSpeed

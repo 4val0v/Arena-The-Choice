@@ -6,6 +6,7 @@
     Axe = 4,
     Dagger,
     Shield,
+    BigShield,
     Helm,
     EnemyShield,
 }
@@ -35,6 +36,9 @@ public static class AbilityFactory
                 break;
             case AbilityType.Shield:
                 ab = new ShieldAbility();
+                break;
+            case AbilityType.BigShield:
+                ab = new BigShieldAbility();
                 break;
             case AbilityType.EnemyShield:
                 ab = new EnemyShieldAbility();

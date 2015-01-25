@@ -47,29 +47,27 @@ public static class ItemsProvider
                   {
                       //Кинжал
                       Type = ItemType.RightHand,
-                      Dmg = 20,
-                      AttackSpeed = +0
+                      Dmg = 15,
                   });
-        Items.Add(new ItemData(6, AbilityType.Sword)
+        Items.Add(new ItemData(6, AbilityType.Dagger)
                   {
                       //Маленький меч
                       Type = ItemType.RightHand,
-                      Dmg = 30,
+                      Dmg = 20,
                       AttackSpeed = (-5)
                   });
-        Items.Add(new ItemData(7, AbilityType.Shield)
+
+        Items.Add(new ItemData(7, AbilityType.BigShield)
                   //Большой щит
                   {
                       Type = ItemType.RightHand,
-                      Defense = 40,
-                      AttackSpeed = (-10)
+                      AttackSpeed = (-5)
                   });
+
         Items.Add(new ItemData(8, AbilityType.Shield)
                   //маленький щит
                   {
                       Type = ItemType.RightHand,
-                      Defense = 25,
-                      AttackSpeed = (-5)
                   });
 
         //helm
@@ -77,28 +75,24 @@ public static class ItemsProvider
                   {
                       //шлем с рогами
                       Type = ItemType.Helm,
-                      Defense = 10,
                       AttackSpeed = 0
                   });
         Items.Add(new ItemData(10, AbilityType.Helm)
                   {
                       //шлем крестоносца
                       Type = ItemType.Helm,
-                      Defense = 15,
                       AttackSpeed = -5
                   });
         Items.Add(new ItemData(11, AbilityType.Helm)
                   {
                       //шлем с пером
                       Type = ItemType.Helm,
-                      Defense = 8,
                       AttackSpeed = +5
                   });
         Items.Add(new ItemData(12, AbilityType.Helm)
                   {
                       //шлем с копьем (или другой любой)
                       Type = ItemType.Helm,
-                      Defense = 12,
                       AttackSpeed = 0
                   });
     }

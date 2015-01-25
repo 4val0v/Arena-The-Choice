@@ -40,22 +40,29 @@ public static class AbilitiesProvider
         //dagger
         Items.Add(new AbilityData(AbilityType.Dagger)
         {
-            Description = "Enemy take 20 dmg when he attacked you 5 times!",
-            Cooldown = 8,
+            Description = "Enemy take 20 dmg when he attacked you!",
+            Cooldown = 25,
         });
 
         //shield
         Items.Add(new AbilityData(AbilityType.Shield)
         {
-            Description = "Add 20 defense to you when enemy attack you 5 times",
-            Cooldown = 8,
+            Description = "Add 20 defense to you when enemy attack you",
+            Cooldown = 15,
+        });
+
+        //shield
+        Items.Add(new AbilityData(AbilityType.BigShield)
+        {
+            Description = "Add 20 defense to you when enemy attack you",
+            Cooldown = 15,
         });
 
         //helm
         Items.Add(new AbilityData(AbilityType.Helm)
         {
-            Description = "+100HP every you 5 attacks",
-            Cooldown = 20,
+            Description = "+50HP every you 5 attacks",
+            Cooldown = 30,
         });
     }
 

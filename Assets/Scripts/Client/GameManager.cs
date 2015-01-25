@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
@@ -194,16 +195,49 @@ public class GameManager : MonoBehaviour
                 //Logger.Log("add enemy ability:" + t);
             }
 
-            if (t == AbilityType.Shield)
+            //снимать щит если чел использовал что-то свое
+            if (t == AbilityType.Axe || t == AbilityType.Sword || t == AbilityType.Mace || t == AbilityType.Spear)
+            {
+                if (_client.PlayerData.Abilities.Any(n => n.Id == AbilityType.Shield || n.Id == AbilityType.BigShield))
+                {
+                    _client.PlayerData.Abilities.RemoveAll(n => n.Id == AbilityType.Shield || n.Id == AbilityType.BigShield);
+                    _screenManager.Arena.StartCouldownFor(AbilityType.Shield);
+                    _screenManager.Arena.StartCouldownFor(AbilityType.BigShield);
+                }
+            }
+
+            if (t == AbilityType.Shield || t == AbilityType.BigShield)
             {
                 _client.EnemyData.Abilities.Add(AbilityFactory.CreateAbility(AbilityType.EnemyShield, this));
             }
         }
         else if (whoId == _client.PlayerData.Id)
         {
-            if (t == AbilityType.Axe || t == AbilityType.Spear || t == AbilityType.Mace || t == AbilityType.Shield || t == AbilityType.Helm)
+            if (t == AbilityType.Axe || t == AbilityType.Sword || t == AbilityType.Mace || t == AbilityType.Spear)
+            {
+                if (_client.EnemyData.Abilities.Any(n => n.Id == AbilityType.EnemyShield))
+                {
+                    _client.EnemyData.Abilities.RemoveAll(n => n.Id == AbilityType.EnemyShield);
+                }
+            }
+
+            if (t == AbilityType.Axe || t == AbilityType.Spear || t == AbilityType.Mace || t == AbilityType.Shield || t == AbilityType.BigShield || t == AbilityType.Helm)
             {
                 _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t, this));
+
+                //if use health, destroy dagger effect
+                if (t == AbilityType.Helm)
+                {
+                    foreach (var ability in _client.PlayerData.Abilities)
+                    {
+                        if (ability.Id == AbilityType.Dagger)
+                        {
+                            _client.PlayerData.Abilities.Remove(ability);
+                            break;
+                        }
+                    }
+                }
+
                 RecalculateAdditionalStats();
                 //Logger.Log("add ability:" + t);
             }
