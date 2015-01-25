@@ -38,6 +38,11 @@ public class WhoIsTheFirstIndicator : MonoBehaviour
 		}
 	}
 
+	private void ChangeText()
+	{
+
+	}
+
 	[SerializeField]
 	private Animator _whoIsTheFirst;
 
