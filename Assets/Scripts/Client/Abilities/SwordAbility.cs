@@ -51,6 +51,7 @@
         if (_remainAttackCount == 0)
         {
            RemoveFromAbilities();
+            Logger.Log("remove sword!");
         }
     }
 }

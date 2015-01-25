@@ -14,6 +14,11 @@ public class Arena : MonoBehaviour
     private CharacterView _player;
     private CharacterView _enemy;
 
+    public GameObject MyShield;
+    public GameObject MyBlood;
+    public GameObject EnemyShield;
+    public GameObject EnemyBlood;
+
     void Awake()
     {
         foreach (var item in _skillButtons)
@@ -115,6 +120,11 @@ public class Arena : MonoBehaviour
         MyWoman.HideAll();
         EnemyMan.HideAll();
         EnemyWoman.HideAll();
+
+        MyShield.SetActive(false);
+        MyBlood.SetActive(false);
+        EnemyShield.SetActive(false);
+        EnemyBlood.SetActive(false);
 
         _timerOnScreen = 0;
         _timerText.text = "" + time;

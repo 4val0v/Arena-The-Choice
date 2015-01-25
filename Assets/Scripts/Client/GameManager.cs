@@ -188,10 +188,21 @@ public class GameManager : MonoBehaviour
 
         if (whoId == _client.EnemyData.Id)
         {
+            if (t == AbilityType.Dagger)
+            {
+                _screenManager.Arena.MyBlood.SetActive(true);
+            }
+
+            if (t == AbilityType.Helm)
+            {
+                _screenManager.Arena.EnemyBlood.SetActive(false);
+            }
+
             if (t == AbilityType.Sword || t == AbilityType.Dagger)
             {
                 _client.PlayerData.Abilities.Add(AbilityFactory.CreateAbility(t, this));
                 RecalculateAdditionalStats();
+
                 //Logger.Log("add enemy ability:" + t);
             }
 
@@ -203,16 +214,22 @@ public class GameManager : MonoBehaviour
                     _client.PlayerData.Abilities.RemoveAll(n => n.Id == AbilityType.Shield || n.Id == AbilityType.BigShield);
                     _screenManager.Arena.StartCouldownFor(AbilityType.Shield);
                     _screenManager.Arena.StartCouldownFor(AbilityType.BigShield);
+
+                    _screenManager.Arena.MyShield.SetActive(false);
                 }
             }
 
             if (t == AbilityType.Shield)
             {
                 _client.EnemyData.Abilities.Add(AbilityFactory.CreateAbility(AbilityType.EnemyShield, this));
+
+                _screenManager.Arena.EnemyShield.SetActive(true);
             }
             else if (t == AbilityType.BigShield)
             {
                 _client.EnemyData.Abilities.Add(AbilityFactory.CreateAbility(AbilityType.EnemyBigShield, this));
+
+                _screenManager.Arena.EnemyShield.SetActive(true);
             }
         }
         else if (whoId == _client.PlayerData.Id)
@@ -222,7 +239,19 @@ public class GameManager : MonoBehaviour
                 if (_client.EnemyData.Abilities.Any(n => n.Id == AbilityType.EnemyShield || n.Id == AbilityType.EnemyBigShield))
                 {
                     _client.EnemyData.Abilities.RemoveAll(n => n.Id == AbilityType.EnemyShield || n.Id == AbilityType.EnemyBigShield);
+
+                    _screenManager.Arena.EnemyShield.SetActive(false);
                 }
+            }
+
+            if (t == AbilityType.Shield || t == AbilityType.BigShield)
+            {
+                _screenManager.Arena.MyShield.SetActive(true);
+            }
+
+            if (t == AbilityType.Dagger)
+            {
+                _screenManager.Arena.EnemyBlood.SetActive(true);
             }
 
             if (t == AbilityType.Axe || t == AbilityType.Spear || t == AbilityType.Mace || t == AbilityType.Shield || t == AbilityType.BigShield || t == AbilityType.Helm)
@@ -237,6 +266,7 @@ public class GameManager : MonoBehaviour
                         if (ability.Id == AbilityType.Dagger)
                         {
                             _client.PlayerData.Abilities.Remove(ability);
+                            _screenManager.Arena.MyBlood.SetActive(false);
                             break;
                         }
                     }

@@ -62,7 +62,7 @@ public class ItemData
 
     public AbilityData Ability { get { return AbilitiesProvider.GetAbility(AbilityId); } }
 
-    public ItemData(int id, AbilityType ability = AbilityType.Sword)
+    public ItemData(int id, AbilityType ability)
     {
         Id = id;
         AbilityId = ability;
